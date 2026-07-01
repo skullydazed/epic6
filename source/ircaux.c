@@ -279,6 +279,8 @@ static	int	recursion = 0;
  * Return value:
  *	- A pointer to a buffer containing at least 'size' bytes.
  *	- Any error results in a panic/trap and does not return.
+ *     - __THIS FUNCTION NEVER RETURNS NULL__
+ *       __IF THE MALLOC FAILS IT DOES NOT RETURN__
  *
  * Notes:
  *	You must pass the return value to new_free() later when you
@@ -297,7 +299,7 @@ void *	really_new_malloc (size_t size, const char *fn, int line)
 	if (size > (size_t)INT_MAX)
 		panic(1, "Malloc(%jd) request is too large from [%s/%d], giving up!",
 				(intmax_t)size, fn, line);
-				
+
 	if (!(ptr = malloc(size + sizeof(MO))))
 		panic(1, "Malloc(%jd) failed from [%s/%d], giving up!", 
 				(intmax_t)size, fn, line);
@@ -696,7 +698,7 @@ char *	malloc_strdup2 (const char *str1, const char *str2)
 	msize = strlen(str1) + strlen(str2) + 1;
 	buffer = new_malloc(msize);
 	*buffer = 0;
-	strlopencpy(buffer, msize, str1, str2, NULL);
+	strlopencpy(buffer, msize, str1, str2, (char *)NULL);
 	return buffer;
 }
 
@@ -736,7 +738,7 @@ char *	malloc_strdup3 (const char *str1, const char *str2, const char *str3)
 	msize = strlen(str1) + strlen(str2) + strlen(str3) + 1;
 	buffer = new_malloc(msize);
 	*buffer = 0;
-	strlopencpy(buffer, msize, str1, str2, str3, NULL);
+	strlopencpy(buffer, msize, str1, str2, str3, (char *)NULL);
 	return buffer;
 }
 #endif
@@ -3592,21 +3594,20 @@ char *	strlpcat (char *source, size_t size, const char *format, ...)
  * Notes:
  *	Uses OpenSSL's RNG.  Should use libsodium's.
  */
-unsigned long	random_number (unsigned long l)
+uint64_t	random_number (unsigned long l)
 {
-	unsigned char *	bytes;
+	unsigned char	bytes[8];
 	int		err;
-	unsigned long	retval;
+	uint64_t	retval;
 
 	if (l != 0)
 		return 0;
 
-	bytes = alloca(sizeof(unsigned long));
-	err = RAND_bytes(bytes, sizeof(unsigned long));
+	err = RAND_bytes(bytes, sizeof(uint64_t));
 	if (err != 1)
 		return 0;
 
-	memmove(&retval, bytes, sizeof(unsigned long));	
+	memmove(&retval, bytes, sizeof(uint64_t));
 	if (retval == 0)
 		return random_number(l);
 	return retval;

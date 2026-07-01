@@ -495,3 +495,8 @@ $ Add $serverctl(GET|SET x CAP_HOLD y)
 * Add support for tracking dependency satisfaction in configure
 * Revamp the libarchive support (vibe coded with gemini)
 * Fix a warning about snprintf() in wserv that clang is being picky about.
+* Add OpenBSD to DEPENDENCIES.md
+* Wrap fopen()s in umask(077) to prevent a race conditioning on access.
+* Fix a bug in script/ambig that i found while debugigng something else
+* Make random_number() unconditionally a 64 bit integer
+* NULLs passed through ... must always be cast (to (char *))

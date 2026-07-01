@@ -178,7 +178,7 @@ struct 	metric_time 	timespec_to_metric	(const Timespec *);
 	/* - - - - - - */
 	char *  uuid4_generate 		(void);
 	char *	uuid4_generate_no_dashes	(void);
-	unsigned long	random_number	(unsigned long);
+	uint64_t	random_number	(unsigned long);
 
 	/* - - - - - - */
 	char *  exec_pipe 		(const char *executable, char *input, size_t *len, char * const *args);

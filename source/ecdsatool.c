@@ -117,6 +117,7 @@ static char *	tool_keygen (int __U(argc), char *argv[])
 	ecdsa_key_t *	key;
 	char *		pubkey;
 	int		fileno_;
+	mode_t		old_umask;
 
 	if (argv[1] == NULL)
 	{
@@ -126,7 +127,11 @@ static char *	tool_keygen (int __U(argc), char *argv[])
 
 	key = ecdsa_key__new();
 
-	if (!(pubout = fopen(argv[1], "w")))
+	old_umask = umask(077);
+	pubout = fopen(argv[1], "w");
+	umask(old_umask);
+
+	if (!pubout)
 	{
 		say("ecdsatool keygen: Could not create file %s -- check permissions?", argv[1]);
 		ecdsa_key__free(&key);

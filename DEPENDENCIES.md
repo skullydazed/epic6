@@ -2,15 +2,15 @@
 This is a list of external dependencies for EPIC6
 All dependencies are essential, but epic6 will build without the "optional" ones at the loss of core functionality.
 
-^ Dependency       ^ Status   ^ Tested with    ^ FreeBSD pkg          ^ apt-get        ^ yum              ^
-| libarchive       | optional |  3.8.7         | archivers/libarchive | libarchive-dev | libarchive-devel |
-| python3          | optional |  3.11.15       | lang/python3         | python3        | python3-devel    |
-| pcre2            | optional |  10.47         | devel/pcre2          | libpcre2-8-0   | pcre2-devel      |
-| openssl/libressl | required |  3.0.16        | (base)               | libssl-dev     | openssl-devel    |
-| ncurses          | required |  6.6.20251230  | (base)               | libncurses-dev | ncurses-devel    |
-| c-ares           | required |  1.34.6        | dns/c-ares           | libc-ares-dev  | c-ares devel     |
-| sqlite           | required |  3.50.4        | databases/sqlite3    | libsqlite3-dev | sqlite           |
-| libsodium        | required |  1.0.21        | crypto/libsodium     | libsodium-dev  | libsodium-devel  |
+^ Dependency       ^ Status   ^ Tested with    ^ FreeBSD pkg          ^ apt-get        ^ yum              ^ OpenBSD    ^
+| libarchive       | optional |  3.8.7         | archivers/libarchive | libarchive-dev | libarchive-devel | libarchive |
+| python3          | optional |  3.11.15       | lang/python3         | python3        | python3-devel    | python     |
+| pcre2            | optional |  10.47         | devel/pcre2          | libpcre2-8-0   | pcre2-devel      | pcre2      |
+| openssl/libressl | required |  3.0.16        | (base)               | libssl-dev     | openssl-devel    | (base)     |
+| ncurses          | required |  6.6.20251230  | (base)               | libncurses-dev | ncurses-devel    | (base)     |
+| c-ares           | required |  1.34.6        | dns/c-ares           | libc-ares-dev  | c-ares devel     | libcares   |
+| sqlite           | required |  3.50.4        | databases/sqlite3    | libsqlite3-dev | sqlite           | sqlite3    |
+| libsodium        | required |  1.0.21        | crypto/libsodium     | libsodium-dev  | libsodium-devel  | libsodium  |
 
 *** Summaries ***
 

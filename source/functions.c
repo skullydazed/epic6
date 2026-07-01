@@ -1489,7 +1489,7 @@ BUILT_IN_FUNCTION(function_rand, input)
 		RETURN_EMPTY;
 
 	/* * */
-	intmax_t	randomval;
+	uint64_t	randomval;
 
 	randomval = random_number(0);
 	if (max_ != 0)

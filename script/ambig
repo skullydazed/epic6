@@ -13,7 +13,7 @@ on ?unknown_command "*" (cmd, args) {
   @ :matches = uniq($matches);
   @ :num = #matches;
   if (num > 1) {
-    xecho -b Ambiguous ${bonly ? [builtin ] : []}command $cmd. Matches \($num\): $unsplit(", " $leftw(5 $matches))${num > 5 ? [, ...] : []};
+    xecho -b Ambiguous ${bonly ? [builtin ] : []}command "$cmd". Matches \($num\): $unsplit(", " $leftw(5 $matches))${num > 5 ? [, ...] : []};
     return 1;
   };
   if (num == 1) {

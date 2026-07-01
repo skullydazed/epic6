@@ -55,6 +55,7 @@ static FILE *	open_log (const char *logfile, FILE **fp)
 	char *		tempname;
 	size_t		templen;
 	Filename 	fullname;
+	mode_t		old_umask;
 
 	/* If the user hasn't specified a logfile, do nothing */
 	if (!logfile)
@@ -94,7 +95,11 @@ static FILE *	open_log (const char *logfile, FILE **fp)
 		strlcpy(fullname, tempname, sizeof(fullname));
 	}
 
-	if ((*fp = fopen(fullname, "a")) != NULL)
+	old_umask = umask(077);
+	*fp = fopen(fullname, "a");
+	umask(old_umask);
+
+	if (*fp)
 	{
 		time_t		t;
 		struct	tm 	ltime;
