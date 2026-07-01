@@ -491,3 +491,7 @@ $ Add $serverctl(GET|SET x CAP_HOLD y)
 * Sunset $uhc()  -- the code was smelly and people should use $mask()
 * Sunset /set suppress_from_remote_server
 * Fix the remaining coverity issues -- famous last words!
+* Add DEPENDENCIES.md
+* Add support for tracking dependency satisfaction in configure
+* Revamp the libarchive support (vibe coded with gemini)
+* Fix a warning about snprintf() in wserv that clang is being picky about.

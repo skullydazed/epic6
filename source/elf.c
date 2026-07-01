@@ -109,8 +109,8 @@ static int	archive_fopen(struct epic_loadfile *elf, char *filename, const char *
 
     extra = fname;
 
-    if ((pos=stristr(fname, ext))!=-1) {
-
+    if ((pos=stristr(fname, ext))!=-1) 
+    {
         /*
          * Here we make fname actually point to a real
          * file, instead of virtual files/directories
@@ -127,27 +127,54 @@ static int	archive_fopen(struct epic_loadfile *elf, char *filename, const char *
         safet+=pos;
         *extra++ = 0;
 
-        elf->a = archive_read_new();
-        if (!archive_read_support_format_all(elf->a)) {
+	/* The following was vibe-coded by gemini on June 30, 2026 */
+	elf->a = archive_read_new();
+	if (elf->a == NULL) {
+	    if (do_error) 
+		yell("Failed to allocate libarchive reader context.");
+	    return -1; 
+	}
 
-            if ( !archive_read_open_filename(elf->a, fname, 10240))  {
-                if ( (strstr(safet, "/"))!=NULL ) { /* specific file provided */
-                    if (!find_in_archive(elf->a, &elf->entry, extra, do_error))
-                        return 0;
-                } else {
-                    if (!find_in_archive(elf->a, &elf->entry, ".ircrc", do_error)) { /* bootstrap */
-                        if (do_error)
-                            yell("No .ircrc in the zip file specified");
-                        return -1;
-                    }
-                }
-                /*
-                 * Our archive should now be open and pointing to the
-                 * beginning of the specified file
-                 */
-                return 1;
-            } /* <-- we can fall off the end */
-        }
+	if (archive_read_support_format_all(elf->a) != ARCHIVE_OK) {
+	    if (do_error) 
+		yell("Libarchive error: %s", archive_error_string(elf->a));
+	    archive_read_free(elf->a);
+	    return -1;
+	}
+
+	if (archive_read_support_filter_all(elf->a) != ARCHIVE_OK) {
+	    if (do_error) 
+		yell("Libarchive error: %s", archive_error_string(elf->a));
+	    archive_read_free(elf->a);
+	    return -1;
+	}
+
+	if (archive_read_open_filename(elf->a, fname, 10240) != ARCHIVE_OK) {
+	    if (do_error) 
+		yell("Could not open archive file: %s", archive_error_string(elf->a));
+	    archive_read_free(elf->a);
+	    return -1;
+	}
+
+	// 5. Process the archive stream contents
+	if (strstr(safet, "/") != NULL) { /* specific file provided */
+	    if (!find_in_archive(elf->a, &elf->entry, extra, do_error)) {
+		archive_read_free(elf->a);
+		return 0; 
+	    }
+	} else { 
+	    /* If no specific file provided, load a bootstrap file */
+	    if (!find_in_archive(elf->a, &elf->entry, ".ircrc", do_error)) {
+		if (do_error) 
+			yell("No .ircrc in the zip file specified");
+		archive_read_free(elf->a);
+		return -1;
+	    }
+	}
+	/* End vibe coding */
+
+	/* Our archive is now successfully open and pointing to the targeted entry */
+	return 1;
     }
     return 0;
 }

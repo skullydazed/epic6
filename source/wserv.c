@@ -118,7 +118,7 @@ int	main (int argc, char **argv)
 		my_exit(89);
 	if (strlen(tmp) > 90)
 		my_exit(90);
-	snprintf(stuff, 100, "tty=%s\n", tmp);
+	snprintf(stuff, 100, "tty=%-90.90s\n", tmp);
 	if (!write(cmd, stuff, strlen(stuff))) 
 		(void) 0;
 

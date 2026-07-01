@@ -45,6 +45,9 @@ AC_SUBST([VERSION])
 echo this is EPIC6 commit $VERSION
 echo
 
+# GRRRRRRRR
+ac_cv_prog_cc_c23=""
+
 AC_PROG_CC
 AC_PROG_CPP
 
@@ -119,12 +122,14 @@ if test "x$with_libarchive" != "xno" ; then
 		[have_libarchive="yes"])
 
 	if test "x$have_libarchive" = "x"; then
+		dependency__libarchive="no (optional)"
 		LIBS="$orig_LIBS"
 		AC_MSG_RESULT(no)
 		if test "x$with_libarchive" = "xyes" ; then
 			AC_MSG_ERROR([--with-libarchive was specified but libarchive could not be found.  Please install libarchive, or do not specify --with-libarchive.])
                 fi
 	else
+		dependency__libarchive="yes"
 		AC_MSG_RESULT(yes)
 		AC_DEFINE([HAVE_LIBARCHIVE], 1, [Define this if you have a working libarchive])
 	fi
@@ -209,23 +214,36 @@ else
 		AC_MSG_RESULT([no])
 		if test "x$with_ssl" != "x"; then AC_MSG_ERROR([You requested SSL support, but OpenSSL was not found. Please supply a pathname to OpenSSL])
 		fi
+		dependency__openssl=no
 		AC_MSG_ERROR([I was unable to find OpenSSL.  If it is not installed, please install it.  If it is installed, please help me find it using --with-ssl=/usr/local or similar.])
 	else
+		dependency__openssl=yes
 		AC_MSG_RESULT([yes])
 	fi
 fi
 
 dnl Look for common libraries that have common functions
 AC_CHECK_LIB(m, pow, LIBS="$LIBS -lm",)
-AC_CHECK_LIB(sqlite3, sqlite3_open, LIBS="$LIBS -lsqlite3",)
-AC_CHECK_LIB(sodium, sodium_init, LIBS="$LIBS -lsodium",)
-AC_CHECK_LIB(ncurses, setupterm, LIBS="-lncurses $LIBS",)
-AC_CHECK_LIB(cares, ares_library_init, LIBS="$LIBS -lcares",)
-
+AC_CHECK_LIB(sqlite3, sqlite3_open,
+               LIBS="$LIBS -lsqlite3"
+               dependency__sqlite3=yes,
+               dependency__sqlite3=no)
+AC_CHECK_LIB(sodium, sodium_init,
+               LIBS="$LIBS -lsodium"
+               dependency__libsodium=yes,
+               dependency__libsodium=no)
+AC_CHECK_LIB(ncurses, setupterm,
+               LIBS="-lncurses $LIBS"
+               dependency__ncurses=yes,
+               dependency__ncurses=no)
+AC_CHECK_LIB(cares, ares_library_init,
+               LIBS="$LIBS -lcares"
+               dependency__cares=yes,
+               dependency__cares=no)
 
 dnl ----------------------------------------------------------
 dnl
-dnl Checking for headers, functions, and a type declarations
+dnl Checking for headers, functions, and type declarations
 dnl We no longer check for header files required by posix.  
 dnl We no longer check for functions required by posix.
 dnl We no longer try to support systems that are that weird.
@@ -385,6 +403,7 @@ AC_ARG_WITH([python],
 with_python_errormsg="--with-python was specified but I could not locate python3-config. Please try specifying --with-path=/path/to/python3-config or --without-python."
 AC_MSG_CHECKING([whether to support Python])
 if test "x$with_python" = "xno" ; then
+	dependency__python3="no (optional)"
 	AC_MSG_CHECKING(whether to support Python)
 	AC_MSG_RESULT(no)
 else
@@ -463,12 +482,14 @@ else
 		have_embedded_python="yes")
 
 	    if test $have_embedded_python = "yes" ; then
+		dependency__python3=yes
 		AC_MSG_RESULT(yes)
 		AC_DEFINE([PYTHON_O], 1, [Define this add stuff....])
 		AC_DEFINE([HAVE_PYTHON], 1, [Define this to support python])
 		AC_DEFINE([PYTHON_CFLAGS], 1, [Stuff to add to CFLAGS to support python])
 		AC_DEFINE([PYTHON_LDFLAGS], 1, [Stuff to add to LDFLAGS to support python])
             else
+		dependency__python3="no (optional)"
 		if test "x$with_python" != "xmaybe" ; then
 			AC_MSG_ERROR([$with_python_errormsg])
 		fi
@@ -505,9 +526,11 @@ else
 		regex_t	preg;
 		pcre2_regcomp(&preg, "^$", 0);
 	]])],
+		dependency__pcre2=yes
 		AC_MSG_RESULT(yes)
 		AC_DEFINE([HAVE_PCRE2], 1, [Whether or not pcre2 works])
 		,
+		dependency__pcre2="no (optional)"
 		AC_MSG_RESULT(no)
 		LIBS="$old_LIBS"
 		AC_CHECK_LIB(regex, regcomp, LIBS="$LIBS -lregex",)
@@ -673,6 +696,15 @@ dnl ----------------------------------------------------------
 dnl
 dnl Commencement
 dnl
+
+echo
+echo "Dependency satisfaction.  See DEPENDENCIES.md if any are unsatisfied"
+
+for i in libarchive python3 pcre2 openssl ncurses cares sqlite3 libsodium ; do
+	eval "tmp=\$dependency__$i"
+	printf "%12.12s - %s\n" $i $tmp
+       #echo "$i \t-\t $tmp"
+done
 
 echo
 echo "If your build fails, make sure you have all the necessary "
