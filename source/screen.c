@@ -4523,6 +4523,8 @@ static void	destroy_prompt (int __U(s_), WaitPrompt **oldprompt)
  *
  * This is modeled after output_with_count, and denormalize_string().
  * All these functions should be refactored somehow.  Too much copypasta!
+ *
+ * XXX I have my doubts about the correctness of this function.
  */
 void	chop_columns (char **str, size_t num)
 {
@@ -4530,7 +4532,7 @@ void	chop_columns (char **str, size_t num)
 	int	codepoint, cols;
 	ptrdiff_t	offset;
 
-	if (!str || !*str)
+	if (!str || !*str || num <= 0)
 		return;
 
 	for (s = (char *)*str; s && *s; s = x)
@@ -4609,7 +4611,7 @@ void	chop_final_columns (char **str, size_t num)
 	size_t	numcols;
 	ptrdiff_t	offset;
 
-	if (!str || !*str)
+	if (!str || !*str || num <= 0)
 		return;
 
 	/* 

@@ -2551,6 +2551,7 @@ static	void	rebuild_scrollback (int refnum)
 {
 	intmax_t	scrolling, holding, scrollback, clearpoint;
 	Window *w;
+	int		l;
 
 	if (!(w = get_window_by_refnum_direct(refnum)))
 		return;
@@ -2560,7 +2561,10 @@ static	void	rebuild_scrollback (int refnum)
 	reconstitute_scrollback(refnum);
 	restore_window_positions(refnum, scrolling, holding, scrollback, clearpoint);
 	w->rebuild_scrollback = 0;
+
+	l = set_context(w->server, w->refnum, NULL, get_window_echannel(refnum), LEVEL_OTHER);
 	do_hook(WINDOW_REBUILT_LIST, "%d", get_window_user_refnum(refnum));
+	pop_context(l);
 }
 
 static void	save_window_positions (int window_, intmax_t *scrolling, intmax_t *holding, intmax_t *scrollback, intmax_t *clearpoint)

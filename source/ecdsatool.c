@@ -251,7 +251,7 @@ static inline ecdsa_key_t *	ecdsa_key__alloc (void)
 	ecdsa_key_t *	key;
 
 	key = new_malloc(sizeof(ecdsa_key_t));
-	memset(key, 0, sizeof(ecdsa_key_t));
+	real_memset(key, 0, sizeof(ecdsa_key_t));
 	/* 
 	 * The OpenSSL API does not give a satisfactory reason why
 	 * the following call might fail -- but it does say it could.
@@ -288,7 +288,7 @@ static	int	check_permissions (FILE *f, mode_t perm)
 
 	fd = fileno(f);
 
-	memset(&sb, 0, sizeof(struct stat));
+	real_memset(&sb, 0, sizeof(struct stat));
 	if (fstat(fd, &sb) < 0)
 	{
 		say("ecdsatool: check_permissions: fstat failed: %s", strerror(errno));

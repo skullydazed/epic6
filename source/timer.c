@@ -356,7 +356,6 @@ typedef struct  timerlist_stru
 	int	domain;
 	int	domref;
 	int	cancelable;
-	long	fires;
 	char *	package;
 }       Timer;
 
@@ -400,7 +399,6 @@ static Timer *	new_timer (void)
 	ntimer->domain = GENERAL_TIMER;
 	ntimer->domref = -1;
 	ntimer->cancelable = 0;
-	ntimer->fires = 0;
 	ntimer->package = NULL;
 	return ntimer;
 }
@@ -453,7 +451,6 @@ static Timer *	clone_timer (Timer *otimer)
 	ntimer->domain = otimer->domain;
 	ntimer->domref = otimer->domref;
 	ntimer->cancelable = otimer->cancelable;
-	ntimer->fires = otimer->fires;
 	if (otimer->package)
 		ntimer->package = malloc_strdup(otimer->package);
 	return ntimer;
@@ -516,8 +513,6 @@ static void	delete_timer (Timer *otimer)
 static int	schedule_timer (Timer *ntimer)
 {
 	Timer *tmp, *prev;
-
-	ntimer->fires = 0;
 
 	/*
 	 * If 'ntimer' is already scheduled, we will desschedule it,
@@ -693,14 +688,12 @@ void    dump_timers (void)
         {
                 time_left = time_diff(current, tmp->time);
                 if (time_left <= 0)
-                    yell("--> %-10s %-10.2f %-7ld %ld %s", 
+                    yell("--> %-10s %-10.2f %-7ld %s", 
                                 tmp->ref, time_left, tmp->events, 
-				tmp->fires,
                                 tmp->callback ? "SYSTEM" : tmp->command);
                 else
-                    yell("    %-10s %-10.2f %-7ld %ld %s", 
+                    yell("    %-10s %-10.2f %-7ld %s", 
                                 tmp->ref, time_left, tmp->events,
-				tmp->fires,
                                 tmp->callback ? "SYSTEM" : tmp->command);
         }
         yell("Make sure to give this list to hop on #epic on efnet!");
@@ -1065,7 +1058,6 @@ Timespec	TimerTimeout (void)
 
 	get_time(&current);
 	timeout_in = time_subtract(current, PendingTimers->time);
-	PendingTimers->fires++;
 	if (time_diff(right_away, timeout_in) < 0)
 		timeout_in = right_away;
 	return timeout_in;

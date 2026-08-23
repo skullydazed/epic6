@@ -128,6 +128,7 @@ static int	archive_fopen(struct epic_loadfile *elf, char *filename, const char *
         *extra++ = 0;
 
 	/* The following was vibe-coded by gemini on June 30, 2026 */
+	/* I have reviewed every line, i understand every line, i stand behind every line */
 	elf->a = archive_read_new();
 	if (elf->a == NULL) {
 	    if (do_error) 

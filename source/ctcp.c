@@ -1,5 +1,5 @@
 /*
- * ctcp.c:handles the client-to-client protocol(ctcp). 
+ * ctcp.c: handles the client-to-client protocol (ctcp). 
  *
  * Copyright (c) 1990 Michael Sandroff.
  * Copyright (c) 1991, 1992 Troy Rollo.
@@ -53,12 +53,12 @@
 #include "functions.h"
 
 /* CTCP BITFLAGS */
-#define CTCP_SPECIAL	1	/* Special handlers handle everything and don't return anything */
-#define CTCP_ORDINARY   2	/* Ordinary handlers either return a inline value or you should tell the user */
-#define CTCP_REPLACE_ARGS   4	/* A "replace args" CTCP rewrites the args, but still needs to be "handled" normally */
-#define CTCP_ACTIVE	8	/* Whether to handle requests (or ignore them) */
-#define CTCP_RAW	32	/* Requires the original payload, not a recoded message */
-#define CTCP_RESTARTABLE 64	/* Requires the CTCP processing to be restarted after handling */
+#define CTCP_SPECIAL		 1	/* Special handlers handle everything and don't return anything */
+#define CTCP_ORDINARY   	 2	/* Ordinary handlers either return a inline value or you should tell the user */
+#define CTCP_REPLACE_ARGS   	 4	/* A "replace args" CTCP rewrites the args, but still needs to be "handled" normally */
+#define CTCP_ACTIVE		 8	/* Whether to handle requests (or ignore them) */
+#define CTCP_RAW		32	/* Requires the original payload, not a recoded message */
+#define CTCP_RESTARTABLE 	64	/* Requires the CTCP processing to be restarted after handling */
 
 /* CTCP ENTRIES */
 /*

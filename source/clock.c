@@ -49,15 +49,6 @@
 /************************************************************************/
 /*			SYSTEM CLOCK					*/
 /************************************************************************/
-/* 
- * XXX This is bogus -- it gets set when you do /set clock_format.
- * The reason we use a global variable is to cut down on the number of
- * calls to get_string_var, which is truly bogus, but neccesary for any
- * semblance of efficiency.
- */
-static	char		*time_format = NULL;	/* XXX Bogus XXX */
-static	const char	*strftime_24hour = "%R";
-static	const char	*strftime_12hour = "%I:%M%p";
 static	char		current_clock[256];
 static	char		clock_timeref[] = "CLKTIM";
 
@@ -75,6 +66,7 @@ static		int		hour = -1;
 		Timespec	tv;
 	struct 	tm		time_val;
 		time_t		hideous;
+	const	char *		clock_format;
 
 	/* 
 	 * Every time /set clock_interval goes off this function calls
@@ -86,15 +78,12 @@ static		int		hour = -1;
 	memset(&time_val, 0, sizeof(time_val));
 	localtime_r(&hideous, &time_val);
 
-	if (time_format)	/* XXX Bogus XXX */
-		strftime(current_clock, sizeof current_clock, 
-				time_format, &time_val);
+	if ((clock_format = get_string_var(CLOCK_FORMAT_VAR)))
+		strftime(current_clock, sizeof current_clock, clock_format, &time_val);
 	else if (get_int_var(CLOCK_24HOUR_VAR))
-		strftime(current_clock, sizeof current_clock,
-				strftime_24hour, &time_val);
+		strftime(current_clock, sizeof current_clock, "%R", &time_val);
 	else
-		strftime(current_clock, sizeof current_clock,
-				strftime_12hour, &time_val);
+		strftime(current_clock, sizeof current_clock, "%I:%M%p", &time_val);
 
 	/*
 	 * Either way we only update /on timer and /on idle every minute.
@@ -122,8 +111,7 @@ static	long	last_milliday;
 	get_metric_time(&metric_time);
 	current_milliday = (long)metric_time;
 
-	snprintf(current_clock, sizeof current_clock, 
-			"%ld", (long)metric_time);
+	snprintf(current_clock, sizeof current_clock, "%ld", (long)metric_time);
 
 	if (current_milliday != last_milliday)
 	{
@@ -173,14 +161,8 @@ void    set_clock_interval (void *__U(stuff))
 	update_system_timer(clock_timeref);	/* XXX Oh heck, why not? */
 }
 
-void     set_clock_format (void *stuff)
+void     set_clock_format (void *__U(stuff))
 {
-	const VARIABLE *v;
-	const char *value;
-
-	v = stuff;
-	value = v->string;
-        malloc_strcpy(&time_format, value);
         reset_clock(NULL);
 }
 

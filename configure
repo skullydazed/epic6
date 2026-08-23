@@ -6412,10 +6412,7 @@ for i in libarchive python3 pcre2 openssl ncurses cares sqlite3 libsodium ; do
 done
 
 echo
-echo "If your build fails, make sure you have all the necessary "
-echo "'*-devel' type packages installed.  This is particularly "
-echo "important for ncurses-devel"
-echo
+echo "If you get build errors, make sure your dependencies are installed (see above)"
 echo "You may now do 'make' and 'make install'"
 echo
 

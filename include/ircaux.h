@@ -241,9 +241,9 @@ typedef struct Bucket Bucket;
  * INT*FUNC is typecasted back to INTTYPE.  One caveat is that INT2STR
  * must return a malloc'd string.
  */
-#define STR2INT(x) (strtoimax(x, NULL, 10))
+#define STR2INT(x) (strtoimax(x, NULL, 0))
 #define INT2STR(x) (malloc_sprintf(NULL, INTMAX_FORMAT, (intmax_t)(x)))
-#define STRNUM(x) (strtoimax(x, NULL, 10))
+#define STRNUM(x) (strtoimax(x, NULL, 0))
 #define NUMSTR(x) (intmaxtoa((intmax_t)(x)))
 
 /* ---------------- */
@@ -317,6 +317,9 @@ const 	char *	inbound_recode 		(const char *, int, const char *, const char *, c
 struct	passwd *	my_getpwuid 		(uid_t uid);
 	long double     atolf 			(const char *);
 	bool    	ld_to_intmax 		(long double, intmax_t *);
+
+/* C99 made me do it */
+static 	void *(*volatile const real_memset)	(void *, int, size_t) = memset;
 
 
 #endif /* _IRCAUX_H_ */

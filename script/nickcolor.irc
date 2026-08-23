@@ -1,0 +1,186 @@
+package nickcolor.irc
+
+# settings:
+#     nick2color.display = light or dark
+^assign nick2color.display dark
+
+# $nick2color($nick) usage:
+#    in your theme, $nick2color($nick) returns $rgb() using a color
+#    chosen by hashing $nick. therefore, $nick2color($nick) will always
+#    return the same color for the same $nick, but it is case sensitive
+#
+#    example:
+#    xecho $nick2color($0)<$0:$1>$chr(15) $2-
+
+alias hashit {
+	@ :hashval = 0;
+	fec ($*) x {
+		@hashval += ascii($x);
+		@hashval += (hashval << 10);
+		@hashval ^= (hashval >> 6);
+	};
+	@hashval += (hashval << 3);
+	@hashval ^= (hashval >> 11);
+	@hashval += (hashval << 15);
+	return $abs($hashval);
+}
+
+alias nick2color {
+    # if you don't like the color of a nick, you can set the override for them, and it will
+    # offset the part of the hash it uses so you'll end up with a different random color
+    #
+    # this is handy if two people who talk a lot share a similar color
+    #
+    # ^eval assign nick2color.override.$encode(nick_to_override) 1
+
+    if (nick2color.override.$encode($0)) {
+        #^local hashed_nick $strtol(16 $mid(1 8 $sha256($0)))
+        #^local hashed_nick $strtol(16 $mid(1 8 $hashit($0)))
+	@ :x = hashit($0)
+        ^local hashed_nick $strtol(16 $right(4 $x)$left(4 $x))
+    } else {
+        #^local hashed_nick $strtol(16 $mid(0 7 $sha256($0)))
+        #^local hashed_nick $strtol(16 $mid(0 7 $hashit($0)))
+	@ :x = hashit($0)
+        ^local hashed_nick $strtol(16 $left(4 $x)$right(4 $x))
+        #^local hashed_nick $strtol(16 $right(8 $hashit($0)))
+    }
+
+    ## general algorithm from:
+    ## https://github.com/Codeux-Software/Textual/blob/89f7173b3fc9986b10fbca587f43928d8f599bc0 \
+    ##   /Sources/App/Classes/IRC/Users/IRCUserNicknameColorStyleGenerator.m#L85
+
+    ^local shash ${hashed_nick >> 1}
+    ^local lhash ${hashed_nick >> 2}
+    ^local hue ${hashed_nick % 360}
+
+
+    if (nick2color.display == [light]) {
+        #^local satur ${shash % 50 + 35}
+        #^local light ${lhash % 38 + 20}
+        ^local satur ${shash % 20 + 80}
+        ^local light ${lhash % 20 + 35}
+
+        if (hue > 45 && hue <= 195) {
+            @:light = lhash % 21 + 20
+
+            if (light > 31) {
+                @:satur = shash % 40 + 55
+            } else {
+                @:satur = shash % 35 + 65
+            }
+        }
+
+        if (hue <= 25 || hue >= 335) {
+            @:satur = shash % 33 + 45
+        }
+
+    } else {
+        #^local satur ${shash % 50 + 45}
+        #^local light ${lhash % 36 + 45}
+        ^local satur ${shash % 25 + 75}
+        ^local light ${lhash % 10 + 45}
+
+        if (hue >= 280 && hue < 335) {
+            @:light = lhash % 36 + 50
+        }
+
+        if (hue >= 210 && hue < 240) {
+            @:light = lhash % 30 + 60
+        }
+
+        if (hue >= 240 && hue < 280) {
+            @:satur = shash % 55 + 40
+            @:light = lhash % 20 + 65
+        }
+
+        if (hue <= 25 || hue >= 335) {
+            @:satur = shash % 33 + 45
+        }
+
+        if (hue >= 50 && hue <= 150) {
+            @:satur = shash % 50 + 40
+        }
+    }
+    @:myrgb = hslToRgb($hue $satur $light)
+
+    #return $hue,$satur%,$light% / $myrgb: $rgb($myrgb)
+    return $rgb($myrgb)
+    #xecho rgb is: $myrgb
+    #return $chr(24)$myrgb
+}
+
+alias hueToRgb {
+    ^local tempp $0
+    ^local tempq $1
+    ^local tempt $2
+
+    if (tempt < 0) {
+        @:tempt = tempt + 1
+    }
+    
+    if (tempt > 1) {
+        @:tempt = tempt - 1
+    }
+
+    if (tempt < (1/6)) {
+        return ${tempp + (tempq - tempp) * 6 * tempt}
+    }
+
+    if (tempt < (1/2)) {
+        return $tempq
+    }
+
+    if (tempt < (2/3)) {
+        return ${tempp + (tempq - tempp) * ((2/3) - tempt) * 6}
+    }
+
+    return $tempp
+}
+
+alias hslToRgb {
+    # JavaScript algorithm from adapted from
+    #     https://stackoverflow.com/a/9493060
+    @:oldfloat = FLOATING_POINT_MATH
+    ^set FLOATING_POINT_MATH ON
+
+    ^local hue $0
+    ^local satur $1
+    ^local light $2
+
+    @:hue = hue / 360
+    @:satur = satur / 100
+    @:light = light / 100
+
+    if (satur == 0) {
+        @:lhex = light * 255
+        @:lhex = tobase(16 $lhex)
+        @:lhex = pad(2 0 $lhex)
+        @:red = lhex
+        @:green = lhex
+        @:blue = lhex
+    } else {
+        if (light < 0.5) {
+            @:tempq = light * (1 + satur)
+        } else {
+            @:tempq = light + satur - (light * satur)
+        }
+        @:tempp = (2 * light) - tempq
+
+        @:hue1 = hue + (1/3)
+        @:red = hueToRgb($tempp $tempq $hue1) * 255
+        @:red = tobase(16 $red)
+        @:red = pad(2 0 $red)
+
+        @:green = hueToRgb($tempp $tempq $hue) * 255
+        @:green = tobase(16 $green)
+        @:green = pad(2 0 $green)
+
+        @:blue = hueToRgb($tempp $tempq ${hue - (1/3)}) * 255
+        @:blue = tobase(16 $blue)
+        @:blue = pad(2 0 $blue)
+    }
+
+    ^set FLOATING_POINT_MATH $oldfloat
+    return #$red$green$blue
+}

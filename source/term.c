@@ -1,5 +1,5 @@
 /*
- * term.c -- termios and (termcap || terminfo) handlers
+ * term.c -- termios and terminfo handlers
  *
  * Copyright (c) 1990 Michael Sandroff.
  * Copyright (c) 1991, 1992 Troy Rollo.
@@ -602,12 +602,19 @@ static const cap2info tcaps[] =
 static const int	numcaps = sizeof tcaps / sizeof tcaps[0];
 
 /*
- * term_inputline_putchar: This is what handles the outputting of the input 
- * buffer.
- * It used to handle more, but slowly the stuff in screen.c prepared away
- * all of the nasties that this was intended to handle.  Well anyhow, all
- * we need to worry about here is making sure nothing suspcious, like an
- * escape, makes its way to the output stream.
+ * term_inputline_putchar - Output one character to the input line
+ *
+ * Arguments:
+ *	c	- A byte to output to the input line
+ *
+ * Ordinary output from epic uses tputs_x(), but the input line does not.  
+ * The input line outputs control characters as reverse characters.  
+ * That is, if you type control+V you will see a reverse V on the input line.
+ *
+ * Other than control characters, this passes the byte through.
+ *
+ * Note: Unicode says that CS1 (0x80-09F) are control characters.
+ * I wonder if we should be mangling those as well
  */
 void	term_inputline_putchar (unsigned char c)
 {
@@ -886,6 +893,17 @@ int 	term_init (void)
 
 
 /*
+ * term_resize -- Determine if the controlling terminal has changed its geometry
+ *
+ * Arguments:
+ *	no arguments
+ *
+ * Return value:
+ *	1 - The controlling terminal has changed size since the last time
+ *	    we were called (we updated "li" and "co" in terminfo_json.
+ *	0 - The controlling terminal did not change since since the last time
+ *	    we were called.
+ * 
  * term_resize: gets the terminal height and width.  Trys to get the info
  * from the tty driver about size, if it can't... uses the termcap values. If
  * the terminal size has changed since last time term_resize() has been

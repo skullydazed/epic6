@@ -5,6 +5,11 @@
  * To every extent permitted by law...
  *    I disclaim all copyright to code I did not write.  
  *    I consider and dedicate this entire file to the public domain.
+ * Notwithstanding the "Vibe Coded" claim above, 
+ *   I have personally reviewed every line of code, 
+ *   I understand it, 
+ *   I have tested it, and 
+ *   I stand behind it.
  *
  * To any extent the above dedication is not permitted by law...
  *    Copyright 2025 EPIC Software Labs.
@@ -205,7 +210,7 @@ static scram_state_t *	get_scrambox (int refnum)
 	if (!scrambox[refnum])
 	{
 		scrambox[refnum] = new_malloc(sizeof(scram_state_t));
-		memset(scrambox[refnum], 0, sizeof(scram_state_t));
+		real_memset(scrambox[refnum], 0, sizeof(scram_state_t));
 	}
 
 	return scrambox[refnum];
@@ -217,7 +222,7 @@ static	void	reset_scrambox (int refnum)
 		return;
 	if (scrambox[refnum])
 	{
-		memset(scrambox[refnum], 0, sizeof(scram_state_t));
+		real_memset(scrambox[refnum], 0, sizeof(scram_state_t));
 		new_free(&(scrambox[refnum]));
 	}
 }
@@ -756,7 +761,7 @@ BUILT_IN_FUNCTION(function_scrambox, input)
 			GET_DWORD_ARG(password, input);
 
 			debug(DEBUG_SCRAM, "Calling scram_client_first_message with %s %s", username_, password);
-			memset(output_buffer, 0, 512);
+			real_memset(output_buffer, 0, 512);
 			if (scram_client_first_message(scrambox_, username_, password, output_buffer, 512)) {
 				yell("Scrambox first message failed for server %d", from_server);
 				RETURN_EMPTY;
@@ -772,7 +777,7 @@ BUILT_IN_FUNCTION(function_scrambox, input)
 					RETURN_EMPTY;
 				}
 				debug(DEBUG_SCRAM, "Calling scram_client_final_message");
-				memset(output_buffer, 0, 512);
+				real_memset(output_buffer, 0, 512);
 				if (scram_client_final_message(scrambox_, output_buffer, 512)) {
 					yell("Client final message failed.");
 					RETURN_EMPTY;

@@ -49,6 +49,8 @@ Use open_memstream() for malloc_sprintf()?
 
 Actual bugs
 ================
+* It's not possible to blank out fields in server desc (like vhost)
+  -- if you do :vhost=tcp4:   then it screws up the client kind of permanently
 * /SET NEW_SERVER_LASTLOG_LEVEL does not work properly because it doesn't check window servers.
 * Create /load ignore on top of /on context and /shh
 * Add /ON GEOMETRY to show columns and rows
@@ -500,3 +502,19 @@ $ Add $serverctl(GET|SET x CAP_HOLD y)
 * Fix a bug in script/ambig that i found while debugigng something else
 * Make random_number() unconditionally a 64 bit integer
 * NULLs passed through ... must always be cast (to (char *))
+* (I've been sitting on these changes for a while...)
+* Clarify that only python 3.8 or later is supported
+* Fix or clarify feedback to the user, add comments
+* Officially support hex constants (0x4000) which is a new thing
+* Create tricks to make c99 compilers not optimize out memset()
+* Convert /load python to a pf script
+* It is no longer necessary to cache /set clock_format into a global var
+* Nor 12 hour clock nor 24 hour clock fomats, either
+* Fix fix_string_width().
+* Don't warn if a kwarg value is empty
+* Fix chop_columns() and chop_final_columns() to not remove highlight chars
+* Make it clear termcap is no longer supported.
+* Add comments to stuff in term.c
+* /TIMERs no longer track the number of times they are fired
+* Ensure /on window_rebuild is called in the context of the window
+* Add new scripts 'nicklist' and 'nickcolor.irc'  See UPDATES

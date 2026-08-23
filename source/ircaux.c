@@ -4620,7 +4620,7 @@ char *	fix_string_width (const char *orig_str, int justify, int fillchar, size_t
 			right_add = adjust_columns;
 		else if (justify == 0) {
 			left_add = adjust_columns / 2;
-			right_add = adjust_columns - left_chop;
+			right_add = adjust_columns - left_add;
 		} else
 			left_add = adjust_columns;
 	}
@@ -7107,12 +7107,15 @@ cJSON *	kwarg_string_to_json (const char *kwarg_string, const char **default_pos
 	field_counter = 0;
 	while ((bytes_consumed = get_kwarg_field(kwarg_string, &key, &value)))
 	{
+/* Am I going to regret this? */
+#if 0
 		/* No value is an empty field -- skip/ignore it */
 		if (is_string_empty(value))
 		{
 			debug(DEBUG_KWARG_PARSE, "Field %d is empty", (int)field_counter);
 			goto advance;
 		}
+#endif
 
 		if (is_string_empty(key))
 		{

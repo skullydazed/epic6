@@ -1,0 +1,133 @@
+if (word(2 $loadinfo()) != [pf]) { load -pf $word(1 $loadinfo()); return; };
+
+#
+# <wcarson> i don't pay attention to the nicklist since it isn't always visible in epic *cough* 
+#
+# Here's the plan
+# An alias:
+#  1. Figure out how wide the terminal is ($geom())
+#  2. Look at $channel() and figure out the widest nick
+#  3. Break $channel() into lines
+#  4. Put each line into a topline
+#  5. Set the toplines appropriately
+# Run this alias 
+#  1. When the script is loaded
+#  2. Every time window geom changes
+#  3. Every time a JOIN, PART, KICK, QUIT, NICK etc happens
+#
+
+load nickcolor.irc;
+
+alias generate_nicklist_toplines_globally (win, ...) {
+	fe ($windowctl(REFNUMS)) x { 
+		generate_nicklist_toplines_for_window $x;
+	};
+};
+
+alias generate_nicklist_toplines_for_channel (chan, server, ...) {
+	# Which window does this belong to?
+	@chanwin = chanwin($chan $server);
+
+	# Is this the current channel on its window?
+	@curchan = windowctl(GET $chanwin CURRENT_CHANNEL);
+	if (chan == curchan) {
+		# Yes it is.
+		generate_nicklist_toplines_for_window $chanwin;
+	};
+	generate_nicklist__checkwins;
+};
+
+alias generate_nicklist__checkwins {
+	# Referential integrity check - look at all windows.
+	# Windows without channels get reset to 0 toplines
+	fe ($windowctl(REFNUMS)) x {
+	    if (!windowctl(GET $x CURRENT_CHANNEL)) {
+		if (windowctl(GET $x TOPLINES) != 0) {
+		    window $winref toplines 0;
+		};
+	    };
+	};
+};
+
+alias generate_nicklist_toplines_for_window (winref, ...) {
+	xeval -s $windowctl(GET $winref SERVER) -w $winref {
+	    # Criteria 1: The window must have a current channel
+	    if (!windowctl(GET $winref CURRENT_CHANNEL)) {
+		generate_nicklist__checkwins;
+		return;
+	    };
+
+	    # Criteria 2, The window must not be hidden
+	    @ :screen_width = word(0 $geom());
+	    if (screen_width <= 0) {
+		generate_nicklist__checkwins;
+		return;
+	    };
+
+	    # Criteria 3, The window's current channel must have nicks
+	    @ :nicks_on_channel = channel();
+	    @ :width = maxlen($nicks_on_channel);
+	    if (!width) {
+		generate_nicklist__checkwins;
+		return;
+	    };
+
+	    # With the criteria met, we can calcluate the number of toplines
+	    @ :nicks_per_topline = (screen_width - 2) / width;
+	    @ :toplines = (#nicks_on_channel / nicks_per_topline) + 1;
+	    @ :toplines = trunc(0 $toplines);
+	    @ :max_width_to_add = (screen_width - 5) - width;
+
+	    # Create the top of the box
+	    @ :seperator = [╔] ## repeat(${screen_width - 3} ═) ## [╗];
+	    window $winref topline 1 "$:seperator";
+
+	    # Create the body of the box
+	    @ :tl = 2;
+	    ^local topline;
+	    fe ($nicks_on_channel) nick {
+		# If this current line is full, commit the current line and reset it.
+		if (printlen($topline) > max_width_to_add) {
+			window $winref topline $tl "║ $fix_width(${screen_width-5} l " " $topline) ║";
+			@ topline = [];
+			@ tl++;
+		};
+
+		# $nick is what we display in the box
+		@ sar(gr/?//nick);
+		@ sar(gr/.//nick);
+
+		# But $nick contains @ and + and we don't want to use that
+		# to determine colors, so 'basenick' it the actual nick
+		@ basenick = nick;
+		@ sar(gr/@//basenick);
+		@ sar(gr/+//basenick);
+
+		# We display $nick in columns, colorized based on $basenick
+		@ topline #= nick2color($basenick) ## fix_width($width l " " $nick);
+	    };
+
+	    # The final line of the body was incomplete, so output it
+	    window $winref topline $tl "║ $fix_width(${screen_width-5} l " " $topline) ║";
+
+	    # Create the bottom of the box.
+	    @ :seperator = [╚] ## repeat(${screen_width - 3} ═) ## [╝];
+	    window $winref topline ${tl+1} "$:seperator";
+	    window $winref toplines ${tl+1};
+	};
+
+	generate_nicklist__checkwins;
+};
+
+
+on #^353 169 * {defer generate_nicklist_toplines_for_channel $2 $serverctl(FROM_SERVER)};
+on #^join 169 * {defer generate_nicklist_toplines_for_channel $1 $serverctl(FROM_SERVER)};
+on #^kick 169 * {defer generate_nicklist_toplines_for_channel $2 $serverctl(FROM_SERVER)};
+on #^part 169 * {defer generate_nicklist_toplines_for_channel $1 $serverctl(FROM_SERVER)};
+on #^channel_signoff 169 * {defer generate_nicklist_toplines_for_channel $0 $serverctl(FROM_SERVER)};
+on #^channel_nick 169 * {defer generate_nicklist_toplines_for_channel $0 $serverctl(FROM_SERVER)};
+on #^window_rebuilt 169 * {defer generate_nicklist_toplines_for_window $0};
+on #^mode 169 * {defer generate_nicklist_toplines_for_channel $1 $serverctl(FROM_SERVER)};
+on #^switch_channels 169 * {defer generate_nicklist_toplines_for_channel $0 $serverctl(FROM_SERVER)};
+
+#hop'2k26

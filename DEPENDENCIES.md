@@ -18,8 +18,8 @@ All dependencies are essential, but epic6 will build without the "optional" ones
    If you need a specific version to work and it doesn't, let me know
  * libarchive is used to provide .zip file support for /load
  * python3 is used as a secondary programming language to provide integration to things not in ircII
- * python3 must be >= 3.8 to be recognized.
- * pcre2 allows you to use "advanced regexes" that have backrefs, which posix does't by default
+ * Only python3 >= 3.8 is intended to be supported
+ * pcre2 allows you to use extended regular expressions that have backrefs, which posix doesn't allow by default
  * openssl is used to provide TLS support.  Both OpenSSL 3 and LibreSSL are fully supported.
  * ncurses is used to provide terminfo support.
  * c-ares is used to provide nonblocking DNS lookups.
