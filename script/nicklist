@@ -49,6 +49,12 @@ alias generate_nicklist__checkwins {
 	};
 };
 
+alias nicklist_sorter (x dword, y dword) {
+	@ :x_ = pass(ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz $x);
+	@ :y_ = pass(ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz $y);
+	return $stricmp("$x_" "$y_");
+};
+
 alias generate_nicklist_toplines_for_window (winref, ...) {
 	xeval -s $windowctl(GET $winref SERVER) -w $winref {
 	    # Criteria 1: The window must have a current channel
@@ -65,7 +71,8 @@ alias generate_nicklist_toplines_for_window (winref, ...) {
 	    };
 
 	    # Criteria 3, The window's current channel must have nicks
-	    @ :nicks_on_channel = channel();
+	    @ :nicks_on_channel_ = channel();
+	    @ :nicks_on_channel = sortby(nicklist_sorter $nicks_on_channel_);
 	    @ :width = maxlen($nicks_on_channel);
 	    if (!width) {
 		generate_nicklist__checkwins;

@@ -1,5 +1,134 @@
 EPIC6-0.0.1
 
+*** News 08/30/2026 -- Wow, I haven't documented things for a long time
+	It's been a long time since i updated this file.  All of the things
+	below dated 8/30/2026 happened between 12/17/2025 and 8/30/2026
+
+*** News 08/30/2026 -- New built-in function $sortby(func-name word-list)
+	You can now sort a word-list using your own alias rather than
+		$sortby(stricmp word-list) 
+	is the same as
+		$sort(word-list) 
+	See the 'nicklist' script for how this can be used in a new way.
+
+	If you didn't want to wrap your sorter into an alias (but you really
+	should), you can pass a lambda function, which is a bit wonky:
+
+	Here's how $sort() might look with a lambda (inline) function:
+		$sortby({(one dword, two dword) { \
+			@ function_return = one <=> two \
+		}} word-list)
+	Note how the first "argument" is a code block wrapped in {}s,
+	but the body of that code block is an arglist block statement
+	You have to do it this way because $sortby() looks for a {
+	to differentiate it from an ordinary function name.
+
+*** News 08/30/2026 -- New built in function $stricmp("word1" "word2")
+	The $stricmp() function takes two qwords, that means they should
+	always be surrounded by double quotes.  The surrounding double
+	quotes get stripped out.  This function does the same thing
+	as the sort operator.
+
+*** News 08/30/2026 -- New built in math operator, "sort operator" <=>
+	The "sort operator", <=> is found in many languages,
+	It returns negative, zero, or positive, depending on how the 
+	two operands sort out
+		@ var1 = [one]
+		@ var2 = [two]
+		@ var1 <=> var2		
+			is negative, because "one" comes before "two"
+	This is strictly a string comparison.
+
+	The comparisons are strictly case insensitive, because ircII is
+	a fully case insensitive language, and I'm not going to make this
+	an exception.   You can use $encode() to do that
+		@ var1 = [one]
+		@ var2 = [TWO]
+	normally TWO comes before one, on a strictly byte-by-byte basis.
+	You can do:
+		@ encode($var1) <=> encode($var2)
+	to sort them case sensitively
+
+*** News 08/30/2026 -- Changing the "swap operator" from <=> to =>
+	The "swap operator> which as far as i can tell nobody ever used,
+	allows you to switch the rvals between two lvals.  You can still
+	do it, but the operator has changed
+		@ var1 = [one]
+		@ var2 = [two]
+		@ var1 => var2
+	then
+		$var1 is "two" and $var2 is "one"
+
+*** News 08/30/2026 -- New scripts, /load nicklist and /load nickcolor.irc
+	The /load nicklist script puts the nicks of everyone on a channel
+	at the top of that channel's window.  Neat!
+
+	The /load nickcolor.irc converts a nickname to a color, to help 
+	you differentiate nicks.  You can use it for more than just nick
+	lists, of course!
+
+*** News 08/30/2026 -- Hex constants are supported in integer contexts
+	You can now do things like
+		@ varname = 0x80
+
+*** News 08/30/2026 -- Officially, only Python 3.8 or newer is supported
+	Although you might get EPIC to build against python 3.7 or earlier,
+	that is not supported and might not work and I won't help you try.
+
+*** News 08/30/2026 -- Sunset /SET SUPPRESS_FROM_REMOTE_SERVER
+	When you get a numeric from a remote server, ircII has traditionally
+	appended "(from irc.server.com").  I don't know why i ever added
+	this feature instead of scripting it away.
+
+*** News 08/30/2026 -- Sunset $uhc()
+	The $uhc() function was superceded by $mask() like 30 years ago.
+
+*** News 08/30/2026 -- Sunset /SET ALLOW_C1_CHARS
+	This /SET served no purpose once we introduced UTF-8 support 
+	10 years ago
+
+*** News 08/30/2026 -- New env variable, IRCCHANNEL
+	You can set the IRCCHANNEL environment variable to set a channel
+	to join after connecting to your first server.  It does the same
+	thing as the -c command line option.
+
+*** News 08/30/2026 -- Sunset password prompting
+	Traditionally if you connected to a server that required a password
+	or you did /OPER, but didn't supply a password, ircII would prompt
+	you for one.  These features existed because on multi-user systems,
+	people might shoulder-surf you at the lab and see your password
+	as you typed it at the input line.  That's not relevant any longer.
+
+*** News 08/30/2026 -- Sunset /MESG
+	The /MESG command existed to help you defend against talk bombs.
+	Neither talk bombs nor /MESG are relevant any longer.
+
+*** News 08/30/2026 -- Sunset of termcap support
+	Originally ircII supported only termcap.  EPIC supports both termcap
+	and terminfo through libncurses.  Now it supports only terminfo
+	(through ncurses)
+
+*** News 08/30/2026 -- CPPCheck and Coverity finds a bunch of bugs
+	During 2026 we used several static analyzers to find and fix bugs. 
+
+*** News 08/30/2026 -- Sunset /BOTMODE -- just use -b
+	The /BOTMODE command which allowed you to take a foreground epic
+	process and send it to the background has been sunset. 
+	Switching between attached and detached after boot is no longer
+	supported.  Use the -b command line argument
+
+*** News 08/30/2026 -- Sunset /bind <X> STOP_IRC
+	The STOP_IRC keybinding, which heralds back to the day before
+	we all used gnu screen/tmux, and which only causes pain and misery,
+	has been retired.
+
+*** News 08/30/2026 -- Removal of sunset /on's
+	The features using these /on's were previously sunset.
+		ENCRYPTED_NOTICE	ENCRYPTED_PRIVMSG
+		FLOOD		HELP		NOTE
+		NOTIFY_SIGNON		NOTIFY_SIGNOFF
+		REDIRECT			WALL
+
 *** News 12/17/2025 -- New configure flag, "--with-installtype"
 	Traditionally epic installs its binary as epic6-<version>
 	and a symlink from "epic6" to "epic6-<version>".

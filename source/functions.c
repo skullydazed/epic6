@@ -368,6 +368,7 @@ static	char
 	*function_sinh		(char *),
 	*function_skip		(char *),
 	*function_sort		(char *),
+	*function_sortby	(char *),
 	*function_split 	(char *),
 	*function_splitw	(char *),
 	*function_splice 	(char *),
@@ -375,6 +376,7 @@ static	char
 	*function_startupfile	(char *),
 	*function_stat		(char *),
 	*function_status	(char *),
+	*function_stricmp	(char *),
 	*function_stripansi	(char *),
 	*function_stripansicodes(char *),
 	*function_stripc 	(char *),
@@ -690,6 +692,7 @@ static BuiltInFunctions	built_in_functions[] =
 	{ "SIN",		function_sin		},
 	{ "SINH",		function_sinh		},
 	{ "SORT",		function_sort		},
+	{ "SORTBY",		function_sortby		},
 	{ "SPLICE",		function_splice 	},
 	{ "SPLIT",		function_split 		},
 	{ "SPLITW",		function_splitw 	},
@@ -701,6 +704,7 @@ static BuiltInFunctions	built_in_functions[] =
 	{ "STATUS_ONEOFF",	function_status_oneoff	},
 	{ "STIME",		function_stime 		},
 	{ "STRFTIME",		function_strftime	},
+	{ "STRICMP",		function_stricmp	},
 	{ "STRIP",		function_strip 		},
 	{ "STRIPANSI",		function_stripansi	},
 	{ "STRIPANSICODES",	function_stripansicodes },
@@ -5072,6 +5076,88 @@ BUILT_IN_FUNCTION(function_umode, words)
 	ret = get_server_umode(servnum);
 	RETURN_STR(ret);		/* Dont pass function call to macro! */
 }
+
+BUILT_IN_FUNCTION(function_stricmp, words)
+{
+	char *	one_;
+	char *	two_;
+	int	retval;
+
+	GET_DWORD_ARG(one_, words);
+	GET_DWORD_ARG(two_, words);
+	retval = my_stricmp(one_, two_);
+	RETURN_INT(retval);
+}
+
+static	char *	sortby_code = NULL;
+static	int	sortby_block;
+
+static int sortby_it (const void *val1_, const void *val2_)
+{
+	char *		args;
+	char *		retval;
+	intmax_t	retval_int;
+
+	args = NULL;
+	if (sortby_block)
+	{
+		malloc_sprintf(&args, "\"%s\" \"%s\"", 
+					*(const char * const *)val1_, 
+					*(const char * const *)val2_);
+		retval = call_lambda_function(NULL, sortby_code, args);
+	}
+	else
+	{
+		malloc_sprintf(&args, "%s(\"%s\" \"%s\")", 
+					sortby_code, 
+					*(const char * const *)val1_, 
+					*(const char * const *)val2_);
+		retval = call_function(args, NULL);
+	}
+	retval_int = strtoimax(retval, NULL, 0);
+
+	new_free(&args);
+	new_free(&retval);
+	return retval_int;
+}
+
+BUILT_IN_FUNCTION(function_sortby, words)
+{
+	int 	wordc;
+	char **	wordl;
+	char	*retval;
+	char *	code;
+	int	block;
+
+	if (*words == '{')
+	{
+		if (!(code = next_expr(&words, '{'))) 
+		{
+			yell("$sortby(): Invalid leading code block");
+			RETURN_EMPTY;
+		}
+		block = 1;
+	}
+	else
+	{
+		GET_DWORD_ARG(code, words);
+		block = 0;
+	}
+
+	if (!(wordc = split_wordlist(words, &wordl, DWORD_DWORDS)))
+		RETURN_EMPTY;
+
+	malloc_strcpy(&sortby_code, code);
+	sortby_block = block;
+
+	qsort((void *)wordl, wordc, sizeof(char *), sortby_it);
+	retval = unsplitw(&wordl, wordc, DWORD_DWORDS);
+
+	new_free(&sortby_code);
+	sortby_block = 0;
+	RETURN_MSTR(retval);
+}
+
 
 static int sort_it (const void *val1, const void *val2)
 {

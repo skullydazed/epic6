@@ -518,3 +518,9 @@ $ Add $serverctl(GET|SET x CAP_HOLD y)
 * /TIMERs no longer track the number of times they are fired
 * Ensure /on window_rebuild is called in the context of the window
 * Add new scripts 'nicklist' and 'nickcolor.irc'  See UPDATES
+* Change the "swap" operator to => (was <=>)
+* Reclaim the <=> operator for "strcmp"
+* Update /load nicklist to sort by nick by alphabeticals only
+* Add $stricmp() function
+* Add $sortby() function
+* Fix bug with privmsgs that need recoding

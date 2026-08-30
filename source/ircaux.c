@@ -6102,7 +6102,7 @@ int	recode_with_iconv_t (iconv_t iref, char **data, size_t *numbytes)
 	size_t	dest_left = 0;
 	size_t	dest_size = 0;
 	char *	work_data;
-	char *	retstr;
+	char *	retstr = NULL;
 
 	/*
 	 * Some sanity checks!

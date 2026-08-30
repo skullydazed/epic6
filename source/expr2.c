@@ -218,6 +218,7 @@ typedef struct
 	TOKEN	last_token;
 
 	const char	*args;
+
 } expr_info;
 
 /* 
@@ -321,7 +322,7 @@ enum LEX {
 	MUL,		DIV,		MOD,
 	PLUS,		MINUS,		STRCAT,
 	SHLEFT,		SHRIGHT,
-	LES,		LEQ,		GRE,		GEQ,
+	LES,		LEQ,		GRE,		GEQ,		STRCMP,
 	MATCH,		NOMATCH,
 	IN,		NOTIN,
 	DEQ,		NEQ,		LITEQ,		NOTLITEQ,
@@ -371,7 +372,7 @@ static	int	prec[TOKCOUNT] =
 	4,		4,		4,
 	5,		5,		5,
 	6,		6,
-	7,		7,		7,		7,
+	7,		7,		7,		7,		7,
 	8,		8,
 	8,		8,
 	9,		9,		9,		9,
@@ -426,7 +427,7 @@ static 	int 	assoc[TOKCOUNT] =
 	LR,		LR,		LR,
 	LR,		LR,		LR,
 	LR,		LR,
-	LR,		LR,		LR,		LR,
+	LR,		LR,		LR,		LR,		LR,
 	LR,		LR,
 	LR,		LR,
 	LR,		LR,		LR,		LR,
@@ -1287,6 +1288,15 @@ static void	reduce (expr_info *cx, int what)
 		break; 							\
 	}
 
+#define STRCMP_								\
+	{ 								\
+		pop_2_strings(cx, &s, &t);				\
+		CHECK_NOEVAL						\
+		push_integer(cx, my_stricmp(s, t));			\
+		break; 							\
+	}
+
+
 	/************** THE OPERATORS THEMSELVES ********************/
 	switch (what) 
 	{
@@ -1561,6 +1571,7 @@ static void	reduce (expr_info *cx, int what)
 		case LEQ:	COMPARE(a <= b, my_stricmp(s, t) <= 0)
 		case GRE:	COMPARE(a > b,  my_stricmp(s, t) > 0)
 		case GEQ:	COMPARE(a >= b, my_stricmp(s, t) >= 0)
+		case STRCMP:	STRCMP_
 
 		/* Miscelaneous operators */
 		case QUEST:
@@ -1991,7 +2002,7 @@ static int	zzlex (expr_info *c)
 			{
 				c->ptr++;
 				if (*c->ptr == '>')
-					OPERATOR("<=>", 1, SWAP)
+					OPERATOR("<=>", 1, STRCMP)
 				else
 					OPERATOR("<=", 0, LEQ)
 			}
@@ -2025,6 +2036,8 @@ static int	zzlex (expr_info *c)
 			}
 			else if (*c->ptr == '~')
 				OPERATOR("=~", 1, MATCH)
+			else if (*c->ptr == '>')
+				OPERATOR("=>", 1, SWAP)
 			else
 				OPERATOR("=", 0, EQ)
 
