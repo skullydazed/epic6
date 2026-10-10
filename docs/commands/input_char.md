@@ -29,14 +29,14 @@ The prompt uses the current window's screen, falling back to the main screen. Th
 ## Example
 
 ```text
-input_char "Press 'q' to quit, any other character to continue: " {
+input_char "Press 'q' to skip, any other character to continue: " {
     unless ([$*] == [q]) {
         echo Continuing
     }
 }
 ```
 
-This exits the callback on `q`; it does not exit EPIC.
+This skips the message on `q`; it does not exit EPIC.
 
 ## Related commands and restrictions
 
