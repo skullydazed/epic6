@@ -22,7 +22,7 @@ All remaining text is executed anew on each iteration through normal block parsi
 
 The repetitions run synchronously with no built-in delay or event-loop yield between them. Commands in the body can introduce their own waits. Use [timer](timer.md) for scheduled repetitions and [pause](pause.md) for an explicit script wait when appropriate.
 
-`repeat` does not establish handlers for [break](break.md) or [continue](continue.md). Without an enclosing construct that catches them, those commands report that they cannot be used there. With an enclosing loop, they can propagate to that loop instead of controlling `repeat`. The repeat counter itself does not check or consume break, continue, or return exceptions between calls to its body. Use [for](for.md) or [while](while.md) when you need ordinary loop control.
+`repeat` does not establish handlers for [break](break.md) or [continue](continue.md). Without an enclosing construct that catches them, those commands report that they cannot be used there. With an enclosing loop, they can propagate to that loop instead of controlling `repeat`. The repeat counter itself does not check or consume break, continue, or return exceptions between calls to its body. Block parsing checks those exceptions only after executing a statement, so a pending exception does not prevent later repeat iterations from executing their first statement again; subsequent statements can then be skipped. Use [for](for.md) or [while](while.md) when you need ordinary loop control.
 
 There are no options, result value, or normal output beyond what the repeated commands produce. The built-in is always registered and needs no IRC connection; the body can contain commands with their own requirements.
 
