@@ -21,7 +21,7 @@ A server request returns before its reply arrives; its callbacks execute later. 
 
 Cached callbacks report non-operator and not-away regardless of actual status. Use `-direct` when those flags matter, or when you need a fresh server response. Hostnames returned by a server may be cloaked or otherwise restricted by its privacy policy.
 
-Callbacks receive their own argument context and local scope, rather than retaining the enclosing command's positional arguments or local variables. Use `-extra` to capture data needed later. [`wait`](wait.md) can be used when a script needs to wait for queued server work; do not depend on receiving a displayed 302 entry for every nickname.
+Callbacks receive their own argument context and local scope, rather than retaining the enclosing command's positional arguments or local variables. Use `-extra` to capture data needed later. [`wait`](wait.md) provides a server round-trip barrier but does not drain all queued batches; do not depend on receiving a displayed 302 entry for every nickname.
 
 ## Options
 
