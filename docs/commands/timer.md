@@ -40,7 +40,7 @@ Flags precede the delay. Names are case-insensitive and accept prefixes; `-ref` 
 
 Repeat counts use base-detecting integer conversion rather than strict validation. Use ordinary positive integers, `-1`, or `*`; other negative values do not provide a useful finite count. Indefinite timers with an explicitly supplied interval below 0.01 seconds are rejected.
 
-Deletion first checks whether the requested name exists. A timer literally named `all` is deleted individually; only when no such timer exists does `all` select bulk deletion. Bulk deletion does not affect server or general timers merely because they might execute in that window. Missing flag arguments, unknown flags, unavailable windows or servers, and nonexistent timer references produce diagnostics.
+Deletion first checks whether the requested name exists. A timer literally named `all` is deleted individually; only when no such timer exists does `all` select bulk deletion. `-delete_for_window` does not affect server or general timers merely because they might execute in that window. Missing flag arguments, unknown flags, unavailable windows or servers, and nonexistent timer references produce diagnostics.
 
 ## Server, window, and general timers
 
