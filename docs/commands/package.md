@@ -18,7 +18,7 @@ Package scope follows the [load](load.md) stack. A nested loaded script initiall
 
 The command uses all supplied argument text as the name, without splitting it into words or interpreting options. With no arguments it sets the current name to empty; it does not list packages. Outside a script-loading context it silently does nothing. Successful changes produce no output, and the built-in is always registered.
 
-Use a simple single-word name with consistent spelling and capitalization. `unload` reads one word, and package comparisons are case-sensitive for global variables and aliases but case-insensitive for hooks, bindings, and timers. A package name is an ownership label, not a namespace prefix for resource names.
+Use a simple single-word name with consistent spelling and capitalization. `unload` reads one word, and package comparisons are case-sensitive for global variables, aliases, and hooks but case-insensitive for bindings and timers. A package name is an ownership label, not a namespace prefix for resource names.
 
 ## Example
 
