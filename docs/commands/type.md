@@ -27,7 +27,7 @@ The normal input dispatcher requires fullscreen mode; simulated input is discard
 With the default bindings, this types a kick template and moves the cursor backward two words so you can edit it before submitting:
 
 ```text
-/type /kick FooScript C1996^[b^[b
+/type /kick #example FooScript C1996^[b^[b
 ```
 
 Here `^[b` is Escape followed by `b`, normally bound to backward-word movement. Different bindings can change the result. This template does not submit the command automatically.
