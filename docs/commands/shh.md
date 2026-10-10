@@ -22,7 +22,7 @@ Ordinary suppressed output does not reach the screen, window scrollback, lastlog
 
 ## Restrictions
 
-Suppression applies to output routed through that context. Commands that create a new context, such as [echo](echo.md), can produce visible output afterward. Direct terminal output and output before a normal window exists are outside this mechanism. This is not a general wrapper for making a command or block quiet, and it does not change the global command-display setting.
+Suppression applies to output routed through that context. Commands that create a new context, such as [xecho](xecho.md), can produce visible output afterward if context handlers do not suppress that new context. Ordinary [echo](echo.md) inherits the current context and remains suppressed. Direct terminal output and output before a normal window exists are outside this mechanism. This is not a general wrapper for making a command or block quiet, and it does not change the global command-display setting.
 
 ## Examples
 
