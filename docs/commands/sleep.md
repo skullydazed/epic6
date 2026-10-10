@@ -8,7 +8,7 @@
 
 ## Description
 
-`sleep` performs a blocking sleep for the requested number of seconds. Decimal intervals such as `0.5` are supported. While blocked, EPIC does not process user input, server traffic, DCC activity, timers, or other event-loop work. The calling script resumes when the wait returns.
+`sleep` performs a blocking sleep for the requested number of seconds. Decimal intervals such as `0.5` are supported. While blocked, EPIC does not process user input, server traffic, timers, or other event-loop work. The calling script resumes when the wait returns.
 
 Data may accumulate while EPIC is blocked, and remote peers can disconnect or time out. Although the client does not process those changes during the sleep, conditions can have changed when it resumes. Do not use `sleep` to wait for a server response; use [wait](wait.md) or a suitable reply hook instead.
 
