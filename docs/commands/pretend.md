@@ -14,7 +14,7 @@ Process a supplied IRC line as though it had arrived from the current server.
 
 All argument text is treated as one IRC protocol line, including any sender prefix, command or numeric, parameters, and trailing `:text`. Named protocol commands must use their wire spelling, such as `PRIVMSG`. There are no options or separate server argument. Normal script expansion occurs before the handler receives the line.
 
-The current server context must identify an open connection; otherwise the command reports `Server reference is not connected`. It does not fall back to the primary server when that context is absent. The built-in is always registered. It does not enforce hook-only use, but use outside a hook must still provide an appropriate connected-server context.
+The current server context must identify an open connection; otherwise the command reports `Server N is not connected`, where `N` is the server reference number. It does not fall back to the primary server when that context is absent. The built-in is always registered. It does not enforce hook-only use, but use outside a hook must still provide an appropriate connected-server context.
 
 An empty line produces no parser action after the connection check. Input is truncated to at most 8191 bytes in the current build. Malformed or unrecognized protocol messages follow the parser's ordinary protocol-error handling; there is no separate pretend success message or result value.
 
