@@ -8,7 +8,7 @@
 
 ## Technical
 
-Returns the dimensions of the screen containing the selected window, as `<columns> <lines>`. With no argument, it uses the client's global current window; `0` also selects that window. An explicit argument can identify a window by refnum or name. Only the first argument word is used; normal function parsing honors [/xdebug dword](../commands/xdebug.md) for quoted names.
+Returns the dimensions of the screen containing the selected window, as `<columns> <lines>`. With no argument, it uses the client's global current window; `0` also selects that window. An explicit argument can identify a window by refnum, name, or UUID. UUID and name lookup is exact and case-insensitive, and takes precedence over numeric lookup. Only the first argument word is used; normal function parsing honors [/xdebug dword](../commands/xdebug.md) for quoted names.
 
 These are the full screen's dimensions, including the space occupied by all windows, status lines, and input. They are not the selected window's scrollback display height. Windows on the same screen report the same dimensions. The function queries EPIC's recorded dimensions and does not resize or select a window.
 
