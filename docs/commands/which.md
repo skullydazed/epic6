@@ -37,4 +37,4 @@ The first displays the current search-path setting. The other commands display t
 
 ## Source
 
-[source/commands.c](../../source/commands.c) registers `which`, selects `loader_which()` in `load()`, parses shared options, and reads files before dispatching the loader. [source/elf.c](../../source/elf.c) implements file opening and decompression; [source/ircaux.c](../../source/ircaux.c) implements path lookup.
+[source/commands.c](../../source/commands.c) registers `which`, selects `loader_which()` in `load()`, parses shared options, and reads files before dispatching the loader. [source/ircaux.c](../../source/ircaux.c) implements path lookup, compressed-file opening, and decompressor selection; [source/elf.c](../../source/elf.c) implements underlying file operations.
