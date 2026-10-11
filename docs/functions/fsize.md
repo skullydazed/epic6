@@ -18,7 +18,7 @@ The function does not require the object to be a regular file. For directories o
 
 Use this function to distinguish an existing zero-length file from a failed lookup. It does not open or read the file and performs no separate read-access check, so a reported size does not guarantee that [$open()](open.md) or [/load](../commands/load.md) can read it. Lookup may still fail if permissions prevent resolving or inspecting the path.
 
-See [$fexist()](fexist.md) for a path read-access test and [$ftell()](ftell.md) for the current position of an open stream. This function does not search EPIC's script load path.
+See [$fexist()](fexist.md) for a path read-access test and [$ftell()](ftell.md) for the current position of an open stream. This function does not search EPIC's script load path. Archive-member pseudo-paths cannot pass the required filesystem path normalization, even when libarchive support is available.
 
 ## Returns
 
@@ -38,4 +38,4 @@ First appeared in EPIC3pre7.
 
 ## Source
 
-Registration and filename parsing: [source/functions.c](../../source/functions.c). Tilde expansion, path normalization, and `file_size()` using `stat()`: [source/ircaux.c](../../source/ircaux.c). Extended-word parsing: [include/words.h](../../include/words.h).
+Registration and filename parsing: [source/functions.c](../../source/functions.c). Tilde expansion, path normalization, and `file_size()`: [source/ircaux.c](../../source/ircaux.c). Its `epic_stat()` wrapper is in [source/elf.c](../../source/elf.c). Extended-word parsing: [include/words.h](../../include/words.h).
