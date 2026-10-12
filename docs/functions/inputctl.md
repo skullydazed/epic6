@@ -24,7 +24,7 @@ The saved or newly stored text, without added quoting. A never-set or cleared bu
 
 ## Restrictions
 
-`cutbuffer` is the only supported property. There are no screen selectors, cursor controls, input-history operations, or undo operations in this built-in. Use [$curpos()](curpos.md) for its supported cursor query/control interface, or [type](../commands/type.md) to append input text.
+`cutbuffer` is the only supported property. There are no screen selectors, cursor controls, input-history operations, or undo operations in this built-in. Use [$curpos()](curpos.md) to query the cursor position, [type](../commands/type.md) to simulate keystrokes, or [xtype -literal](../commands/xtype.md) to insert text at the cursor without invoking key bindings.
 
 ## Examples
 
