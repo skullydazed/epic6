@@ -109,9 +109,9 @@ Depth is the number of enclosing event frames to skip, not a hook identifier. Su
 ## Examples
 
 ```irc
-@ hook_id = hookctl(add ^msg * echo Message: $*)
+@ hook_id = hookctl(add ^msg * echo Message hook fired)
 @ hookctl(set hook $hook_id argument_list nick, msg)
-@ hookctl(set hook $hook_id stuff echo Message from $nick: $msg)
+@ hookctl(set hook $hook_id stuff echo Message hook updated)
 @ pattern = hookctl(get hook $hook_id nick)
 @ hookctl(remove $hook_id)
 ```
