@@ -22,7 +22,7 @@ Find the word under the input cursor using `$L` (the input line) and [$curpos()]
 $word($indextoword($curpos() $L) $L)
 ```
 
-This is useful for completion scripts. At the end of a nonempty line it selects the last word, rather than a new empty word after a trailing separator.
+This is useful for completion scripts with ASCII input on the same screen. `curpos()` uses logical input tokens, which can differ from code-point positions when zero-width characters occur, and `$L` can refer to a different screen in other execution contexts. At the end of a nonempty line it selects the last word, rather than a new empty word after a trailing separator.
 
 ## Returns
 
