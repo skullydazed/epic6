@@ -12,7 +12,7 @@ All three arguments use `atof` conversion to C `double`, so fractional steps and
 
 If start is less than stop, the interval is added repeatedly while the current value is less than or equal to stop. Otherwise it is subtracted while the value is greater than or equal to stop. Equal endpoints produce one value with an ordinary nonzero finite interval. The endpoint is included only if the sequence reaches it without passing it.
 
-Values are formatted with `%f` (six fractional decimal places), then trailing fractional zeros and the decimal point are removed. The [floating_point_math](../settings/floating_point_math.md) and [floating_point_precision](../settings/floating_point_precision.md) settings do not control this formatting. Floating-point rounding can omit an expected endpoint or make distinct small steps print as identical values.
+Values are first formatted with `%f` (six fractional decimal places). With [floating_point_math](../settings/floating_point_math.md) enabled, trailing fractional zeros and the decimal point are removed. With that setting disabled, the decimal point and everything after it are discarded, even though sequence generation still uses doubles. [floating_point_precision](../settings/floating_point_precision.md) does not control this formatting. Floating-point rounding can omit an expected endpoint or make distinct small steps print as identical values.
 
 ## Practical
 
@@ -34,7 +34,7 @@ There is no output-count limit or event-loop yielding inside the generation loop
 | `$jot(4)` | Empty string |
 | `$jot(4 6 8)` | `4` |
 | `$jot(a 4)` | `0 1 2 3 4` |
-| `$jot(0 1 0.25)` | `0 0.25 0.5 0.75 1` |
+| `$jot(0 1 0.25)` | `0 0.25 0.5 0.75 1` with `floating_point_math` enabled; `0 0 0 0 1` otherwise |
 | `$jot(2 6 -2)` | `2 4 6` |
 | `$jot(2 6 0)` | Empty string |
 
