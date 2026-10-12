@@ -26,7 +26,7 @@ The stored directory string, without added quoting or validation. The query prod
 load $irclib()/script/motd
 ```
 
-This explicitly selects the `motd` script beneath the chosen library directory instead of searching `load_path`. The extra slash is harmless for an ordinary Unix directory path; loading still depends on the file existing and being readable. Paths containing spaces require the quoting supported by [load](../commands/load.md).
+This explicitly selects the `motd` script beneath the chosen library directory instead of searching `load_path`. The extra slash is harmless for an ordinary Unix directory path; loading still depends on the file existing and being readable. The [load](../commands/load.md) filename parser does not support quote grouping, so a library path containing spaces cannot be passed this way reliably.
 
 ## Source
 
