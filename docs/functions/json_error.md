@@ -21,7 +21,7 @@ An error string, or the empty string when no parse error is stored. This is not 
 ## Examples
 
 ```text
-@parsed = json_explode(data {)
+@parsed = json_explode(data not_json)
 @parse_error = json_error()
 echo $parse_error
 ```
