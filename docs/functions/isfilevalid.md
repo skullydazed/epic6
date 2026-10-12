@@ -6,7 +6,7 @@
 
 ## Description
 
-Returns true if the handle is present in EPIC's open-file registry, and false otherwise. This includes handles returned by [open](open.md), [connect](connect.md), or [exec](exec.md). Once [close](close.md) removes a handle, it is no longer valid.
+Returns true if the handle is present in EPIC's open-file registry, and false otherwise. This includes handles returned by [open](open.md) or [exec](exec.md). Once [close](close.md) removes a handle, it is no longer valid.
 
 These are EPIC file handles, not operating-system file descriptors, server references, or filenames. A raw descriptor number is not a substitute; if it happens to equal a registered EPIC handle, the function tests that EPIC handle.
 
