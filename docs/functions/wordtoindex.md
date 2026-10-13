@@ -22,7 +22,7 @@ For valid UTF-8, offsets count code points, rather than bytes, grapheme clusters
 
 This function can locate a word after text has been rewritten, for example in completion scripts that also use [indextoword](indextoword.md). Take account of repeated spaces when using the result to edit text. It is not a general inverse of that function for all spacing and positions.
 
-[Curpos](curpos.md) uses input cursor positions with its own screen and character-width limitations; do not assume every code-point offset from this function is interchangeable with a displayed cursor column.
+[curpos](curpos.md) uses input cursor positions with its own screen and character-width limitations; do not assume every code-point offset from this function is interchangeable with a displayed cursor column.
 
 ## Returns
 
