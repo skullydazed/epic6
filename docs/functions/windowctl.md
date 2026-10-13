@@ -105,4 +105,4 @@ The function appeared in EPIC4-1.2.0. `swappable` appeared in EPIC4-1.2.2, `topl
 
 ## Source
 
-Registered and wrapped by `function_windowctl` in [source/functions.c](../../source/functions.c). The dispatch, window lookup, creation, traversal, property storage, and scrollback insertion are in [source/window.c](../../source/window.c). Formatting denormalization and logging flag parsing are in [source/ircaux.c](../../source/ircaux.c).
+Registered and wrapped by `function_windowctl` in [source/functions.c](../../source/functions.c). The dispatch, window lookup, creation, traversal, property storage, and scrollback insertion are in [source/window.c](../../source/window.c). Formatting denormalization and logging flag parsing are in [source/screen.c](../../source/screen.c).
