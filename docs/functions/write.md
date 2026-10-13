@@ -20,7 +20,7 @@ The handle must contain decimal digits, optionally preceded by a minus sign. A p
 
 ## Practical
 
-Use this function to save configuration or other text to an already open writable file. [Writeb](writeb.md) writes without an appended newline and decodes CTCP-quoted binary data; it is not simply the same text writer with its newline disabled.
+Use this function to save configuration or other text to an already open writable file. [writeb](writeb.md) writes without an appended newline and decodes CTCP-quoted binary data; it is not simply the same text writer with its newline disabled.
 
 Writing flushes the C stream immediately. A successful flush does not establish that data has been committed to durable storage. This function does not open a file, enable logging, or add the line to window output or lastlog.
 
