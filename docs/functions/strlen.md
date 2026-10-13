@@ -18,7 +18,7 @@ Use this function to measure literal text, function results, or automatic expand
 
 A decimal integer: the number of code points, or `0` for empty input. There are no options, settings, or server requirements.
 
-The implementation performs a quick count without validating UTF-8: every byte below `0x80` or at least `0xC0` counts once, and bytes `0x80` through `0xBF` do not count. Malformed text therefore need not produce a meaningful character count. Use [`isutf8`](isutf8.md) when validation is required.
+The implementation performs a quick count without validating UTF-8: every byte below `0x80` or at least `0xC0` counts once, and bytes `0x80` through `0xBF` do not count. Malformed text therefore need not produce a meaningful character count. [`isutf8`](isutf8.md) performs a separate structural check, with its own limitations; it is not strict Unicode validation.
 
 ## Examples
 
