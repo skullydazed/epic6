@@ -24,7 +24,7 @@ Conversion is performed in place on the copy and only applied when the mapped co
 
 ```irc
 $tolower(HELLO THERE.)          Returns hello there.
-$tolower(MaRY Had A LITTe lAMB) Returns mary had a little lamb.
+$tolower(MaRY Had A LITTe lAMB) Returns mary had a litte lamb.
 $tolower()                     Returns the empty string.
 ```
 
