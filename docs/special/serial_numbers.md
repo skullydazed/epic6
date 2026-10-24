@@ -35,9 +35,22 @@ The quiet `-` noise mode avoids activation notices. The ordering comes from seri
 
 For each serial number, EPIC compares matching patterns and selects the highest wildcard-match score. Only that group's winning handler runs. Equal scores retain the first encountered match in the hook list; definition order is not a general tie-breaking promise. An excepting handler can win and cause that group to run no body.
 
-Different serial numbers allow independent winners, even with the same pattern. Reusing the same event, pattern, and serial replaces the corresponding existing handler instead of creating an independent second handler. Choose groups deliberately when multiple scripts should coexist, and coordinate their serial numbers rather than assuming a private group namespace for each package.
+Patterns that do not match `$*` are ignored. Successful matches score one point per literal character matched, plus one for the terminating NUL (end of string). `"*"` therefore scores 1; `"* *"` scores 2 when the data contains a space and wins over `"*"` in the same group.
+
+Different serial numbers allow independent winners, even with the same pattern. Reusing the same event, case-insensitive pattern, and serial replaces the existing action and attributes; it never appends commands. Changing the noise modifier does not change the hook's identity. For example, `/on ^connect "*" {commands}` and `/on -connect "*" {commands}` both use serial zero, so the last definition replaces the earlier one.
 
 Patterns and noise modes still follow the ordinary `on` rules. Flexible patterns can be expanded during event dispatch. Earlier handlers can also change state, hook definitions, or the event context used by later processing; serial ordering is not isolation or a transaction.
+
+## Choosing an unused serial
+
+Generally, use serial zero for display and default-action control, and nonzero serials for independent processing. Scripts share serial groups; there is no private group namespace for each package. To choose an unused positive or negative serial for one event type, use:
+
+```text
+/on #^connect + "*" {commands}
+/on #^connect - "*" {commands}
+```
+
+**There is no direct way to retrieve the serial number automatically chosen by `/ON`.** If knowing it is important, use [getserial](../functions/getserial.md) and save its result before registering the hook. This lets you reuse the number for several event types or later address a hook by its serial. `$getserial(HOOK + 0)` and `$getserial(HOOK - 0)` check existing hooks across all event types, whereas inline allocation checks only the selected type. The function does not reserve the number; install a hook before requesting another unused serial.
 
 ## Suppressing default behavior
 

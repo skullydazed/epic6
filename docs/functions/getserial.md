@@ -18,6 +18,8 @@ This function searches existing hooks rather than maintaining a counter. It does
 
 This is related to specifying a bare `+` or `-` serial in `/on`. That command searches only the selected event type; `$getserial()` checks all event types.
 
+**There is no direct way to retrieve the serial number automatically chosen by a command such as `/on #^connect + "*" {commands}`.** If your script needs to know the serial, use `$getserial()` and save the result before defining the hook. This is also useful when several hooks of different event types should share one serial. See [Using hooks with serial numbers](../special/serial_numbers.md).
+
 ## Returns
 
 An unused serial as an integer string. Missing required arguments, an unsupported type, or an invalid direction returns empty without a diagnostic.
@@ -32,6 +34,16 @@ The search's upper limit is `32767` for `+` and lower limit is `-32767` for `-`.
 ```
 
 These return `1` and `-1` respectively if those serials are unused across all hook types. `$getserial(hook + 500)` returns `500` if unused, otherwise the next available number up to the search limit.
+
+Save one serial and reuse it for hooks of different event types:
+
+```irc
+@ connection_serial = getserial(HOOK + 0)
+on #-connect $connection_serial "*" {echo Connected: $*}
+on #-disconnect $connection_serial "*" {echo Disconnected: $*}
+```
+
+The saved value identifies the serial used by both hooks, so the script can later address them with the same event, serial, and pattern. Use `getserial(HOOK - 0)` instead to allocate a negative serial. Install the first hook before making another allocation call: saving the result alone does not reserve it.
 
 ## History
 

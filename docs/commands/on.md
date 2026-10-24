@@ -16,7 +16,23 @@ Register, list, or remove event handlers, also called hooks.
 
 EPIC raises events when something happens, such as a message arriving or someone joining a channel. Each event has a type and a data string. `on` selects events by type and wildcard pattern, then runs script commands with the event data available as `$*`, `$0`, `$1`, and so on. The data fields depend on the event. The optional argument list binds them as it does for [alias](alias.md).
 
-A hook is uniquely identified by its event type, serial number, and case-insensitive pattern. Defining the same combination again replaces its attributes and action. Successful definitions print the event, pattern, action, noise level, serial number, and a separate hook identifier. The latter is used by `$hookctl()` and is distinct from the ordering serial.
+A hook is uniquely identified by its event type, serial number, and case-insensitive pattern. Defining the same combination again replaces its attributes and action; it never appends commands to the existing action. Noise modifiers, argument lists, and other attributes do not create separate hooks. Successful definitions print the event, pattern, action, noise level, serial number, and a separate hook identifier. The latter is used by `$hookctl()` and is distinct from the ordering serial.
+
+For example, these definitions both identify the hook `(CONNECT, 0, "*")`:
+
+```text
+/on ^connect "*" {echo First action}
+/on -connect "*" {echo Second action}
+```
+
+Only the second definition remains, including its quiet noise mode and action. Reversing the load order leaves only the first definition. Use different serial numbers when both actions should run.
+
+```text
+/on #^connect 100 "*" {echo First action}
+/on #-connect 200 "*" {echo Second action}
+```
+
+These hooks coexist and run in serial-number order: first 100, then 200, regardless of their definition order.
 
 ## Event types and serial numbers
 
@@ -28,9 +44,22 @@ The default serial number is zero. To specify another, put `#` first in the even
 /on #-msg 500 "*" {commands}
 ```
 
-Negative serials run before zero and positive serials after zero. A serial token of `+` or `-` chooses an unused positive or negative serial for that event type. Supply valid integer serials otherwise: the parser uses integer conversion rather than rejecting malformed tokens, and missing or misplaced serials can misparse the pattern.
+Serials run in increasing numeric order: negative serials before zero and positive serials after zero. Generally, use serial zero for display and default-action control, and nonzero serials for independent processing. See [Using hooks with serial numbers](../special/serial_numbers.md).
+
+A serial token of `+` or `-` chooses an unused positive or negative serial for that event type:
+
+```text
+/on #^connect + "*" {echo Positive serial}
+/on #^connect - "*" {echo Negative serial}
+```
+
+**There is no direct way to retrieve the serial number automatically chosen by `/ON`.** If your script needs to know it, reuse it, or later address that hook, use [getserial](../functions/getserial.md) and save the result before defining the hook. `$getserial(HOOK + 0)` and `$getserial(HOOK - 0)` search across all event types; the inline `+` and `-` forms search only the selected event type.
+
+Supply valid integer serials otherwise: the parser uses integer conversion rather than rejecting malformed tokens, and missing or misplaced serials can misparse the pattern.
 
 For each serial number, EPIC selects the matching pattern with the highest wildcard-match score and executes at most one winning action. Ties follow the stored pattern order, so do not rely on definition order to break them. A broad handler and a more specific handler at the same serial are alternatives, rather than two actions that both run.
+
+Patterns that do not match `$*` are ignored. A successful match scores one point per literal character matched, plus one for the terminating NUL (end of string). Thus `"*"` scores 1, while `"* *"` scores 2 when the event data contains a space: the literal space gives it the higher score, so it wins over `"*"` at the same serial.
 
 ## Noise modifiers and default actions
 
