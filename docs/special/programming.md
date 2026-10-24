@@ -70,6 +70,8 @@ Script-defined functions are aliases called as `$name(arguments)` or from expres
 
 ## Practical habits
 
+See [Script best practices](script_best_practices.md) for PF loading, allocating hook serial numbers, arranging processing around display, and using the supplied theme support.
+
 - Use braces consistently around delayed bodies and semicolons between statements, including nested ones.
 - Use meaningful local names and dotted structures for related variables; use [Karll arrays](karll_arrays.md) when separate indexed string storage is needed.
 - Comment your code using the selected loader's supported syntax and indent nested bodies.
