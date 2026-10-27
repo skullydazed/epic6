@@ -56,7 +56,7 @@ See the removed [dcc get](ctcp_get.md) and [dcc close](ctcp_close.md) facilities
 
 ## Other retained behavior
 
-The script attempts to enable the former `MIRC_BROKEN_DCC_RESUME` setting if it is off. That setting is absent from EPIC6. It also prints a warning about CTCP flood protection when `NO_CTCP_FLOOD` is enabled; the current CTCP implementation still uses that setting, but changing it cannot restore DCC support.
+The script attempts to enable the former `MIRC_BROKEN_DCC_RESUME` setting if it is off. That setting is absent from EPIC6. Its legacy CTCP warning tests whether `getset(no_ctcp_flood)` differs from `off`, so a missing setting can also trigger the warning. `NO_CTCP_FLOOD` is not registered in EPIC6; this warning does not establish a supported setting or a working throttle. The C sender retains a branch referencing the old variable identifier, but updates its timestamp only when dropping a reply, not after successful replies. Neither that branch nor an old setting assignment restores DCC support.
 
 The script defines an unload handler to remove its aliases, request hook, and `autoget.patterns.*`/`autoget.reget.*` variables. Because the pattern commands use the separate `autoget.*patterns` names, those command-maintained variables are not among the variables removed by that handler.
 
@@ -68,6 +68,8 @@ The original documentation records that `autoget` first appeared in EPIC4 1.1.1 
 
 - [script/autoget](../../script/autoget): command definitions, mismatched pattern variables, request handler, modes, defaults, warnings, and unload behavior.
 - [source/commands.c](../../source/commands.c), [source/hook.c](../../source/hook.c), and [source/vars.c](../../source/vars.c): current command, hook, and setting registrations omit the removed DCC facilities.
-- [source/ctcp.c](../../source/ctcp.c): current CTCP handling has no built-in DCC offer handler and retains CTCP flood checks.
+- [source/ctcp.c](../../source/ctcp.c): current CTCP handling has no built-in DCC offer handler; the retained outgoing reply branch does not establish supported flood protection.
 - [source/functions.c](../../source/functions.c): `function_rmatch()` and `function_remw()` implement pattern matching and exact list-entry removal.
 - [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES): DCC retirement notes.
+
+- [include/vars.h](../../include/vars.h) and [source/vars.c](../../source/vars.c): the legacy identifier remains declared, but no `NO_CTCP_FLOOD` registration assigns it a dedicated setting; `get_int_var()` merely reads its supplied index.
