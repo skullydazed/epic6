@@ -1,0 +1,21 @@
+# epic-crypt-gpg-aa helper (removed)
+
+## Description
+
+`epic-crypt-gpg-aa` was a Bash helper for the client's former external message-encryption interface. Both correspondents needed compatible external-cipher configuration using the helper and a shared passphrase. It was an external executable, not a script loaded with `/load`.
+
+The helper encrypted and decrypted message data through GnuPG. It adapted GnuPG's ASCII armor by stripping its envelope and joining the encoded payload into one line, then reconstructing an armored block at the receiving end. This provided a text representation suitable for the former IRC encryption framing; it did not remove IRC message-length limits.
+
+EPIC6 has removed external encryption and the former end-to-end encryption command interface, and the helper is absent from the current tree. The original document's statement that external cipher programs remained supported is therefore obsolete. Installing this old helper or GnuPG does not restore the removed client integration, and there is no current built-in external-cipher invocation to document.
+
+The original page also compared the helper with the built-in cryptography available at that time. That comparison describes older EPIC releases; it is not a claim that the corresponding message-encryption facilities remain available in EPIC6.
+
+## History
+
+The original documentation records that the helper first appeared in EPIC4 1.1.3. Its DokuWiki revision identifier was `epic-crypt-gpg-aa.txt,v 1.1 2007/02/22 05:07:29 jnelson Exp`.
+
+## Source references
+
+- [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES): retirement of external encryption and the former end-to-end encryption interface.
+- [source/commands.c](../../source/commands.c) and [source/functions.c](../../source/functions.c): current registrations omit the former command/function interfaces.
+- Repository history, `script/epic-crypt-gpg-aa` in `32f485a5^`: removed Bash implementation, GnuPG invocation, shared-passphrase input, and armor adaptation.
