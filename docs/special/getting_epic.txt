@@ -1,0 +1,36 @@
+# Getting EPIC
+
+This source tree is EPIC6. Older EPIC4 and EPIC5 scripts are not automatically interchangeable with it: EPIC6 has removed or changed interfaces, so use documentation and scripts appropriate for the client generation you intend to run.
+
+The project's documentation entry point is [epicsol.org](https://epicsol.org/), as recorded in this repository's [README](../../README.md). The original page's statements about which generations and distribution binary packages were current are historical and should not be used as a package-availability list.
+
+## EPIC6 source through Git
+
+The configured `origin` for this checkout identifies the EPIC6 source repository:
+
+```sh
+git clone https://git.epicsol.org/epic6.git
+cd epic6
+```
+
+This creates a source checkout, not an installed executable. See [basic Git for CVS users](basic_git_for_cvs_users.txt) for updating a checkout and producing patches.
+
+## Older source locations
+
+The original documentation listed these release archive locations for EPIC4 and EPIC5:
+
+- [EPIC4 production archive](https://ftp.epicsol.org/pub/epic/EPIC4-PRODUCTION/).
+- [EPIC5 production archive](https://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/).
+
+Although the original heading called these “HTTP and FTP,” the listed URLs use HTTPS. They are preserved as historical source locations; their current availability and release contents were not tested during this source-based migration.
+
+The original Git examples likewise referred to the older generations:
+
+```sh
+git clone https://git.epicsol.org/epic5.git
+git clone https://git.epicsol.org/epic4.git
+```
+
+## Validation
+
+The EPIC6 identity was checked in [source/irc.c](../../source/irc.c), and its clone URL against this checkout's Git `origin`. [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES) record interface retirements relevant to compatibility. Remote archive availability and operating-system package catalogs are not established by these local source records.
