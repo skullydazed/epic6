@@ -18,7 +18,7 @@ ircII <client-version> - <client-information>
 
 `<client-version>` is `$J`, the compiled `irc_version` string. `<client-information>` is the current [`client_information`](../set/client_information.md) setting, initialized from the build's `IRCII_COMMENT`. Contrary to the original documentation, this handler does not independently obtain or append the operating system name and version. Such information appears only if the configured text or a customized handler includes it.
 
-Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP VERSION reply from sender: reply-text`. Request hooks, inactive CTCP registration, and outgoing reply throttling can prevent automatic responses.
+Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP VERSION reply from sender: reply-text`. Request hooks or inactive CTCP registration can prevent automatic responses. The C sender retains a reply-throttling branch, but [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) is not a registered setting. The branch updates its timestamp only when dropping replies, not after successful replies; it does not establish a supported or reliable reply-rate limit.
 
 ## Examples
 
@@ -38,4 +38,6 @@ The original DokuWiki revision identifier was `ctcp_version.txt,v 1.3 2006/07/24
 - [script/ctcp](../../script/ctcp): `VERSION` registration and reply construction.
 - [source/functions.c](../../source/functions.c): `$J` returns `irc_version`.
 - [source/vars.c](../../source/vars.c): `CLIENT_INFORMATION` registration and default.
-- [source/ctcp.c](../../source/ctcp.c): reply hooks, display, and throttling.
+- [source/ctcp.c](../../source/ctcp.c): reply hooks, display, and the retained incomplete reply-throttling branch.
+
+- [source/vars.c](../../source/vars.c) and [include/vars.h](../../include/vars.h): the legacy variable identifier remains declared without dedicated registration; `get_int_var()` directly reads its supplied index.
