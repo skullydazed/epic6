@@ -1,0 +1,56 @@
+# DCC CLOSE (removed)
+
+## Former synopsis
+
+```irc
+/dcc close [<type>|-all|*] [<nick>|-all|*] ["<filename>"]
+```
+
+## Current status
+
+EPIC6 has removed the built-in `/dcc` command and its DCC implementation. The historical selectors, rejection notifications, and connection-closing operations described below are unavailable. Retained scripts referring to DCC do not restore those primitives.
+
+## Historical behavior
+
+DCC Close cancelled a pending session or closed an existing one:
+
+| Type | Effect |
+| --- | --- |
+| `SEND` | Rescind an outgoing file offer or terminate an outgoing transfer. |
+| `GET` | Reject an incoming file offer or terminate an incoming transfer. |
+| `CHAT` | Close the dedicated direct-chat connection. |
+| `RAW` | Close a raw client socket created by the former `connect()` interface, or a listener created by `listen()`. Closing a listener did not close already accepted connections. |
+| `-ALL` or `*` | Select every type above. |
+
+`<nick>` was the peer name shown by DCC List. `-ALL` or `*` selected all peers for the selected type. These were special all-selectors; arbitrary wildcard patterns were not supported for the type, peer name, or filename.
+
+A filename distinguished file-transfer sessions and could be double-quoted when it contained spaces. It was needed only for `SEND` or `GET` selection. Without a filename, the first matching session was closed when several sessions had the same type and peer.
+
+Closing an unaccepted offer was treated as DCC Reject and sent the other peer a CTCP reply announcing that the connection would not be completed. To decline a file someone offered you, the local direction was `GET`; to rescind your own outgoing offer, it was `SEND`. Exiting the client also closed its DCC connections.
+
+The original document warned that some older EPIC versions could crash when closing a session from a DCC event hook while that session was being processed. This was a limitation of the removed implementation, not an available EPIC6 event path.
+
+## Historical examples
+
+These identify obsolete configurations and are not supported EPIC6 commands:
+
+```irc
+/dcc close chat bob
+/dcc close get bob
+/dcc close chat *
+/dcc close chat -all
+/dcc close * bob
+/dcc close -all bob
+```
+
+The first closes Bob's chat; the second declines Bob's incoming file offer. The next pair closes every chat, and the final pair closes all selected DCC sessions with Bob.
+
+## History
+
+The original document records that DCC Close first appeared in ircII 2.1.2. Its DokuWiki revision identifier was `dcc_close.txt,v 1.4 2006/08/29 18:22:56 sthalik Exp`.
+
+## Source references
+
+- [KNOWNBUGS](../../KNOWNBUGS): retirement of `/dcc`, `$dccctl()`, and related facilities.
+- [source/commands.c](../../source/commands.c): the current command table has no DCC handler.
+- [source/ctcp.c](../../source/ctcp.c): current CTCP initialization has no built-in DCC negotiation or rejection handler.
