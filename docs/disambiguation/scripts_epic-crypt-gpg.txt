@@ -1,0 +1,21 @@
+# epic-crypt-gpg helper (removed)
+
+## Description
+
+`epic-crypt-gpg` was a Bash helper for the client's former external message-encryption interface. Both correspondents needed compatible external-cipher configuration and a shared passphrase. It was an external executable rather than a script loaded with `/load`.
+
+The helper used GnuPG for encryption and decryption without ASCII armor. Its binary output was not suitable for sending as raw IRC message text; the helper did not itself provide an IRC-safe text representation. The separate [epic-crypt-gpg-aa](scripts_epic-crypt-gpg-aa.txt) helper adapted armored output for the historical protocol.
+
+The historical input protocol took `encrypt` or `decrypt` as a shell argument, read a passphrase word from the first input line, discarded additional words on that line, and processed the remaining message data. A passphrase containing spaces was therefore not preserved by that interface.
+
+EPIC6 has removed external encryption and the former end-to-end encryption command interface, and no longer ships this helper. The original document's statement that external cipher support remained available is obsolete. Installing the helper or GnuPG does not restore the removed integration. Its comparison with the built-in cryptography of older EPIC versions likewise does not describe a current EPIC6 message-encryption interface.
+
+## History
+
+The original documentation records that this helper first appeared in EPIC4 1.1.3. Its DokuWiki revision identifier was `epic-crypt-gpg.txt,v 1.1 2007/02/22 05:07:29 jnelson Exp`.
+
+## Source references
+
+- [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES): retirement of external encryption and the former end-to-end encryption interface.
+- [source/commands.c](../../source/commands.c) and [source/functions.c](../../source/functions.c): current command/function registrations omit the former interfaces.
+- Repository history, `script/epic-crypt-gpg` in `32f485a5^`: removed Bash helper, input protocol, and binary GnuPG output.
