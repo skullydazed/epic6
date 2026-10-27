@@ -1,0 +1,73 @@
+# autoget script (obsolete)
+
+The retained `autoget` script automated incoming DCC file transfers in older EPIC versions. EPIC6 has removed the built-in DCC command, DCC transfer implementation, and `DCC_REQUEST` hook. Loading this script does not restore those facilities, so its commands are not a supported file-transfer mechanism in EPIC6.
+
+## Historical synopsis
+
+```irc
+/load autoget
+/autoget [<pattern> ...]
+/autoget -<pattern>
+/autoreget [<pattern> ...]
+/autoreget -<pattern>
+/autoreject [<pattern> ...]
+/autoreject -<pattern>
+/autoclobber [<partial-mode> [<full-mode>]]
+```
+
+The original synopsis misspelled the removal form of `/autoreject` as `/autorejrect`; the command defined by the script is `/autoreject`.
+
+## Historical purpose and matching
+
+The commands were intended to maintain patterns for getting new files, handling existing files, and declining automatic transfers. With no arguments, each pattern command prints its list. Prefix a pattern with `-` to remove an equal list entry; removal uses `remw()`, not wildcard matching, and removes the first matching entry. Additions and removals can be mixed in one invocation.
+
+The retained request handler matches patterns against a combined string of the form `nick!user@host,IP,filename`, not against the sender and filename separately. It replaces commas in the offered filename with dots for matching. The local path is constructed from the former `DCC_STORE_PATH` setting and the URL-decoded offered filename. These patterns are not an authentication mechanism.
+
+The intended roles were:
+
+| Command | Historical purpose |
+| --- | --- |
+| `/autoget` | Automatically accept a matching offer when there is no nonempty local file to handle as an existing transfer. |
+| `/autoreget` | Handle matching offers for existing files according to the partial-file and full-file modes. The defaults were `RESUME` for a smaller local file and `CLOSE` for an equal or larger local file. |
+| `/autoreject` | Exclude matching offers from this script's automatic acceptance. The retained handler does not close those offers. |
+
+The handler first compares the offered size with the local size. If the local size is at least the offered size, it selects the full-file mode. Otherwise, a positive local size selects the partial-file mode; other cases select `GET`. Thus, for a positive-sized offer, a zero-length local file takes the new-file path rather than the partial-file path.
+
+## Retained script inconsistencies
+
+The command aliases and request handler use different variable names. For example, `/autoget` edits `autoget.getpatterns`, while the handler reads `autoget.patterns.get`; the same mismatch exists for the reget and reject lists. Consequently, the command-maintained lists do not configure the lists read by the handler. The handler initializes its get and reget lists to `*` when their variables have no existing value, while the command aliases report their separate variables.
+
+The reject branch contains only a comment and performs no action. It prevents this handler from scheduling a get or resume when its reject list matches; it does not issue the `/dcc close` claimed in the original document. These are observations about the retained script, not fixes to it, and the removed DCC infrastructure prevents ordinary use in EPIC6 regardless.
+
+## Historical autoclobber modes
+
+`/autoclobber` sets the action for an existing local file. The first argument selects the partial-file action, and the second selects the action for a file that is at least as large as the offered file. With no arguments, it prints the current modes and usage. One argument changes only the partial-file mode.
+
+| Mode | Action requested by the retained handler |
+| --- | --- |
+| `GET` | Defer `/dcc get` for the offer. Historically this requested a fresh download in place of the existing file. |
+| `RESUME` | Defer `/dcc resume` for the offer. |
+| `RENAME` | Rename the existing local file by appending `~` and a generated numeric suffix, then defer `/dcc get`. The script searches for a suffix whose path does not already exist. |
+| `CLOSE` | Defer `/dcc close get` for the offer. |
+
+`CLOSE` is accepted by the script even though the original synopsis omitted it. The initial modes are `RESUME CLOSE`, unless the corresponding variables already have values when the script loads. Changing these modes affects only the historical existing-file path; it does not repair the pattern-variable mismatch or restore DCC.
+
+See the removed [dcc get](ctcp_get.md) and [dcc close](ctcp_close.md) facilities for context.
+
+## Other retained behavior
+
+The script attempts to enable the former `MIRC_BROKEN_DCC_RESUME` setting if it is off. That setting is absent from EPIC6. It also prints a warning about CTCP flood protection when `NO_CTCP_FLOOD` is enabled; the current CTCP implementation still uses that setting, but changing it cannot restore DCC support.
+
+The script defines an unload handler to remove its aliases, request hook, and `autoget.patterns.*`/`autoget.reget.*` variables. Because the pattern commands use the separate `autoget.*patterns` names, those command-maintained variables are not among the variables removed by that handler.
+
+## History
+
+The original documentation records that `autoget` first appeared in EPIC4 1.1.1 and was greatly enhanced in EPIC4 1.1.8. Its DokuWiki revision identifier was `autoget.txt,v 1.3 2007/02/27 04:57:37 jnelson Exp`.
+
+## Source references
+
+- [script/autoget](../../script/autoget): command definitions, mismatched pattern variables, request handler, modes, defaults, warnings, and unload behavior.
+- [source/commands.c](../../source/commands.c), [source/hook.c](../../source/hook.c), and [source/vars.c](../../source/vars.c): current command, hook, and setting registrations omit the removed DCC facilities.
+- [source/ctcp.c](../../source/ctcp.c): current CTCP handling has no built-in DCC offer handler and retains CTCP flood checks.
+- [source/functions.c](../../source/functions.c): `function_rmatch()` and `function_remw()` implement pattern matching and exact list-entry removal.
+- [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES): DCC retirement notes.
