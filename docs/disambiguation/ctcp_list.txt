@@ -1,0 +1,27 @@
+# DCC LIST (removed)
+
+## Former synopsis
+
+```irc
+/dcc list
+```
+
+## Description
+
+Historically, DCC List displayed all active and pending DCC connections. The listed information included connection type, the original document's “entropic” indicator, peer nickname, current status, opening time, and file-transfer size, throughput, and filename where applicable.
+
+The command invoked the former `ON DCC_LIST` hook. With `DCC_LONG_PATHNAMES` off, the filename display showed only its final path component.
+
+EPIC6 has removed the built-in DCC command and implementation, the `DCC_LIST` event, and the `DCC_LONG_PATHNAMES` setting. This command no longer provides a connection list, and the historical hook and filename-display rules do not apply to the current client. Retained scripts cannot restore the removed primitives merely by referring to them.
+
+See [DCC Chat](ctcp_chat.txt), [DCC Get](ctcp_get.txt), and [DCC Close](ctcp_close.txt) for related historical operations.
+
+## History
+
+The original DokuWiki revision identifier was `dcc_list.txt,v 1.2 2006/07/26 19:47:17 sthalik Exp`.
+
+## Source references
+
+- [KNOWNBUGS](../../KNOWNBUGS): retirement of `/dcc`, `$dccctl()`, and related facilities.
+- [source/commands.c](../../source/commands.c): current command registration has no DCC handler.
+- [source/hook.c](../../source/hook.c) and [source/vars.c](../../source/vars.c): current registrations omit the former list event and filename-display setting.
