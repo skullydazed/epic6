@@ -23,7 +23,7 @@ name (user@host) Idle seconds second(s)
 | `host` | Portion after `@` in `$X`, the current server's recorded userhost. |
 | `seconds` | `$E`, the client's input idle time in whole seconds. |
 
-The handler does not independently discover the host or obtain an idle value from the IRC server. It ignores additional request arguments. Automatic replies are subject to CTCP request handling, activation settings, and the outgoing reply throttle. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP FINGER reply from sender: reply-text` unless scripts customize or suppress them.
+The handler does not independently discover the host or obtain an idle value from the IRC server. It ignores additional request arguments. CTCP request handling and activation settings can prevent automatic replies. The C sender also retains a reply-throttling branch, but [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) is not a registered setting. The branch updates its timestamp only when dropping replies, so it does not establish a supported or reliable reply-rate limit. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP FINGER reply from sender: reply-text` unless scripts customize or suppress them.
 
 ## Example
 
@@ -39,4 +39,6 @@ The original DokuWiki revision identifier was `ctcp_finger.txt,v 1.3 2006/07/24 
 
 - [script/ctcp](../../script/ctcp): `do_ctcp_finger_request()` and handler registration.
 - [source/functions.c](../../source/functions.c): `$X` and `$E` expandos.
-- [source/ctcp.c](../../source/ctcp.c): request dispatch, reply hooks/display, and reply throttling.
+- [source/ctcp.c](../../source/ctcp.c): request dispatch, reply hooks/display, and the retained incomplete reply-throttling branch.
+
+- [source/vars.c](../../source/vars.c) and [include/vars.h](../../include/vars.h): current setting registration omits the legacy identifier; `get_int_var()` reads an index rather than resolving a setting name.
