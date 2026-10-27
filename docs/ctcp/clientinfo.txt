@@ -1,0 +1,43 @@
+# CTCP CLIENTINFO
+
+## Synopsis
+
+```irc
+/ctcp <target> clientinfo [<ctcp-command>]
+```
+
+## Description
+
+`CLIENTINFO` is a CTCP help request. Without an argument, a supporting client can return a list of its available CTCP names. With a command argument, it can return information about that command. Support, response format, and whether a reply is sent depend on the receiving client. See [`ctcp`](../commands/ctcp.md).
+
+EPIC6 supplies its responder in [script/ctcp](../../script/ctcp), loaded by [script/builtins](../../script/builtins). The responder returns `$ctcpctl(ACTIVE)` when no command is given. For a registered active command, it returns the uppercase name and its registered description; only the first command argument is used. A registered inactive command receives no response from this handler.
+
+The active list describes local registration state, not a promise that every name is intended for manual requests. The original document cautioned against directly sending internal `DCC`, `ERRMSG`, and `SED` messages. EPIC6 has removed its built-in DCC and SED implementations; the supplied CTCP script still registers `ERRMSG`.
+
+**Current implementation limitation:** the responder passes the requested name to `ctcpctl(GET ... ACTIVE)` without checking registration first. The C getter accesses the lookup result without guarding an unknown name, which can crash the responding EPIC6 client. Request descriptions only for names the responder has advertised.
+
+Request hooks, inactive CTCP settings, or outgoing reply throttling can prevent a reply. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md), allowing scripts to customize or suppress their display.
+
+## Examples
+
+Ask which CTCP names John's client advertises:
+
+```irc
+/ctcp john clientinfo
+```
+
+After confirming that the receiving client advertises `VERSION`, request its description:
+
+```irc
+/ctcp joebob clientinfo version
+```
+
+## History
+
+The original DokuWiki revision identifier was `ctcp_clientinfo.txt,v 1.3 2006/07/24 19:50:14 sthalik Exp`.
+
+## Source references
+
+- [script/ctcp](../../script/ctcp): `do_clientinfo_request()` and `CLIENTINFO`/`ERRMSG` registrations.
+- [source/ctcp.c](../../source/ctcp.c): `function_ctcpctl()`, `lookup_ctcp()`, CTCP hooks, reply display, and reply throttling.
+- [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES): retirement of DCC and legacy encryption facilities.
