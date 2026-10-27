@@ -1,0 +1,31 @@
+# CTCP ACTION
+
+## Synopsis
+
+```irc
+/ctcp <target> action <action-description>
+```
+
+## Description
+
+CTCP `ACTION` carries the action description used by [`describe`](../commands/describe.md) and [`me`](../commands/me.md). Prefer those commands for ordinary use: they invoke [`on send_action`](../on/send_action.md) for the local action display. Sending the protocol message directly through [`ctcp`](../commands/ctcp.md) bypasses that action-specific send hook and local echo.
+
+Incoming nonempty actions handled by EPIC invoke [`on action`](../on/action.md) with the sender, destination, and description. The built-in handler uses the action message level, displays the action if the hook permits it, and sends no automatic reply. Empty descriptions are ignored. Script CTCP handling can replace the built-in behavior.
+
+The generic `/ctcp` command normally sends a CTCP request through `PRIVMSG`. When called while processing a private message, it instead sends a reply through `NOTICE`; it refuses invocation while processing a notice. Use `/me` or `/describe` when the intended operation is to send an ordinary action.
+
+## Examples
+
+```irc
+/me waves
+/describe #example waves
+```
+
+## History
+
+The original DokuWiki revision identifier was `ctcp_action.txt,v 1.3 2006/07/24 19:50:14 sthalik Exp`.
+
+## Source references
+
+- [source/commands.c](../../source/commands.c): `ctcpcmd()`, `describe()`, and `mecmd()` distinguish direct CTCP sending from action-specific hooks and display.
+- [source/ctcp.c](../../source/ctcp.c): `init_ctcp()` registers `ACTION` for request and reply handling; `do_atmosphere()` invokes the receiving hook; `send_ctcp()` frames outgoing messages.
