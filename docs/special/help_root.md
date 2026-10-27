@@ -26,9 +26,9 @@ The **Historical description / migration note** column preserves the original in
 | [clear](../commands/clear.md) | Do a [window clear](../window/clear.md); Display nothing in the window. | C command registered; see linked reference for behavior. |
 | [ctcp](../commands/ctcp.md) | **C**lient **T**o **C**lient **P**rotocol: ask other clients for information. | C command registered; see linked reference for behavior. |
 | [dcc](../disambiguation/dcc.md) | **D**irect **C**lient **C**onnection: talking with another user outside of irc. | Removed or unregistered built-in interface. |
-| [dcc get](../disambiguation/ctcp_get.txt) | Accept a copy of someone else's file. | Removed DCC interface; no current built-in command or transport. |
-| [dcc resume](../disambiguation/ctcp_resume.txt) | Agree to continue downloading a file you partially downloaded already. | Removed DCC interface; no current built-in command or transport. |
-| [dcc send](../disambiguation/ctcp_send.txt) | Extend an offer to copy a file to someone else. | Removed DCC interface; no current built-in command or transport. |
+| [dcc get](../disambiguation/ctcp_get.md) | Accept a copy of someone else's file. | Removed DCC interface; no current built-in command or transport. |
+| [dcc resume](../disambiguation/ctcp_resume.md) | Agree to continue downloading a file you partially downloaded already. | Removed DCC interface; no current built-in command or transport. |
+| [dcc send](../disambiguation/ctcp_send.md) | Extend an offer to copy a file to someone else. | Removed DCC interface; no current built-in command or transport. |
 | [disconnect](../commands/disconnect.md) | Close the connection to a server | C command registered; see linked reference for behavior. |
 | [encrypt](../disambiguation/encrypt.md) | Initiate transparent encryption over any transport protocol. | Removed or unregistered built-in interface. |
 | [exit](../commands/exit.md) | Tell the client to shut down. | C command registered; see linked reference for behavior. |
@@ -39,7 +39,7 @@ The **Historical description / migration note** column preserves the original in
 | [knock](../commands/knock.md) | Ask to be [invite](../commands/invite.md)d to a channel. | C command registered; see linked reference for behavior. |
 | [lastlog](../commands/lastlog.md) | Redisplay stuff that has previously shown up in a window. | C command registered; see linked reference for behavior. |
 | [log](../commands/log.md) | General purpose logfiles. | C command registered; see linked reference for behavior. |
-| [me](../commands/me.md) | Tell the channel what you are doing with a [ctcp action](../ctcp/action.txt). | C command registered; see linked reference for behavior. |
+| [me](../commands/me.md) | Tell the channel what you are doing with a [ctcp action](../ctcp/action.md). | C command registered; see linked reference for behavior. |
 | [mode](../commands/mode.md) | Change the mode of a channel. | C command registered; see linked reference for behavior. |
 | [msg](../commands/msg.md) | Send a message to someone. | C command registered; see linked reference for behavior. |
 | [nick](../commands/nick.md) | Change your nickname. | C command registered; see linked reference for behavior. |
@@ -61,23 +61,23 @@ The **Historical description / migration note** column preserves the original in
 | --- | --- | --- |
 | [admin](../commands/admin.md) | Ask the server how to contact the server admin. | C command registered; server enforces protocol/permissions. |
 | [connect](../commands/connect.md) | Ask a server on the network to link to another server not on the network (oper only). | C command registered; server enforces protocol/permissions. |
-| [ctcp action](../ctcp/action.txt) | Action protocol used by ME/DESCRIBE; direct CTCP sending bypasses SEND_ACTION. | C ACTION handler registered. |
-| [ctcp clientinfo](../ctcp/clientinfo.txt) | Ask another client what ctcp commands they support. | Script request handler in `script/ctcp`; requires loading. |
-| [ctcp echo](../ctcp/echo.txt) | Ask another client to send you a string back. | Script request handler in `script/ctcp`; requires loading. |
-| [ctcp finger](../ctcp/finger.txt) | Ask another client about the man behind the mask. | Script request handler in `script/ctcp`; requires loading. |
-| [ctcp ping](../ctcp/ping.txt) | Ask another client to respond, to measure lag time. | Script request handler in `script/ctcp`; requires loading. |
-| [ctcp time](../ctcp/time.txt) | Ask another client what time they think it is. | Script request handler in `script/ctcp`; requires loading. |
-| [ctcp userinfo](../ctcp/userinfo.txt) | Ask another client for its user-customizable string. | Script request handler in `script/ctcp`; requires loading. |
-| [ctcp utc](../ctcp/utc.txt) | Render a supplied seconds-since-epoch timestamp in the receiver's local timezone. | Script request/response conversion in `script/ctcp`. |
-| [ctcp version](../ctcp/version.txt) | Ask for client identification; replies may be customized or falsified. | Script request handler in `script/ctcp`; requires loading. |
-| [dcc chat](../disambiguation/ctcp_chat.txt) | Initiate a private conversation with someone outside of irc. | Removed DCC interface; no current built-in command or transport. |
-| [dcc close](../disambiguation/ctcp_close.txt) | Terminate a dcc session. | Removed DCC interface; no current built-in command or transport. |
-| [dcc closeall](../disambiguation/ctcp_closeall.txt) | Terminate every dcc session. | Removed DCC interface; no current built-in command or transport. |
-| [dcc list](../disambiguation/ctcp_list.txt) | Show all of the dcc sessions. | Removed DCC interface; no current built-in command or transport. |
-| [dcc raw](../disambiguation/ctcp_raw.txt) | Send data to a dcc socket connection. | Removed DCC interface; no current built-in command or transport. |
-| [dcc rename](../disambiguation/ctcp_rename.txt) | Change the nickname associated with a dcc session. | Removed DCC interface; no current built-in command or transport. |
+| [ctcp action](../ctcp/action.md) | Action protocol used by ME/DESCRIBE; direct CTCP sending bypasses SEND_ACTION. | C ACTION handler registered. |
+| [ctcp clientinfo](../ctcp/clientinfo.md) | Ask another client what ctcp commands they support. | Script request handler in `script/ctcp`; requires loading. |
+| [ctcp echo](../ctcp/echo.md) | Ask another client to send you a string back. | Script request handler in `script/ctcp`; requires loading. |
+| [ctcp finger](../ctcp/finger.md) | Ask another client about the man behind the mask. | Script request handler in `script/ctcp`; requires loading. |
+| [ctcp ping](../ctcp/ping.md) | Ask another client to respond, to measure lag time. | Script request handler in `script/ctcp`; requires loading. |
+| [ctcp time](../ctcp/time.md) | Ask another client what time they think it is. | Script request handler in `script/ctcp`; requires loading. |
+| [ctcp userinfo](../ctcp/userinfo.md) | Ask another client for its user-customizable string. | Script request handler in `script/ctcp`; requires loading. |
+| [ctcp utc](../ctcp/utc.md) | Render a supplied seconds-since-epoch timestamp in the receiver's local timezone. | Script request/response conversion in `script/ctcp`. |
+| [ctcp version](../ctcp/version.md) | Ask for client identification; replies may be customized or falsified. | Script request handler in `script/ctcp`; requires loading. |
+| [dcc chat](../disambiguation/ctcp_chat.md) | Initiate a private conversation with someone outside of irc. | Removed DCC interface; no current built-in command or transport. |
+| [dcc close](../disambiguation/ctcp_close.md) | Terminate a dcc session. | Removed DCC interface; no current built-in command or transport. |
+| [dcc closeall](../disambiguation/ctcp_closeall.md) | Terminate every dcc session. | Removed DCC interface; no current built-in command or transport. |
+| [dcc list](../disambiguation/ctcp_list.md) | Show all of the dcc sessions. | Removed DCC interface; no current built-in command or transport. |
+| [dcc raw](../disambiguation/ctcp_raw.md) | Send data to a dcc socket connection. | Removed DCC interface; no current built-in command or transport. |
+| [dcc rename](../disambiguation/ctcp_rename.md) | Change the nickname associated with a dcc session. | Removed DCC interface; no current built-in command or transport. |
 | [deop](../commands/deop.md) | Revoke your own irc operatorship privileges (oper only) | C command registered; see linked reference for behavior. |
-| [describe](../commands/describe.md) | Tell another nick what you are doing with a [ctcp action](../ctcp/action.txt). | C command registered; see linked reference for behavior. |
+| [describe](../commands/describe.md) | Tell another nick what you are doing with a [ctcp action](../ctcp/action.md). | C command registered; see linked reference for behavior. |
 | [die](../commands/die.md) | Tell your server to shut down (oper only) | C command registered; server enforces protocol/permissions. |
 | [flush](../disambiguation/flush.md) | Suppress display of stuff coming from the server when you're being flooded. | Removed or unregistered built-in interface. |
 | [hostname](../commands/hostname.md) | Change your virtual hostname. | C command registered; see linked reference for behavior. |
@@ -133,7 +133,7 @@ The **Historical description / migration note** column preserves the original in
 | [bind_blink](../bind/blink.md) | Insert the char that toggles blinking | C binding action registered. |
 | [bind_bold](../bind/bold.md) | Insert the char that toggles bold video | C binding action registered. |
 | [bind_clear_screen](../bind/clear_screen.md) | Do a [window clear](../window/clear.md) | C binding action registered. |
-| [bind_cpu_saver](../disambiguation/bind_cpu_saver.txt) | Ask the client to save cpu by doing less housekeeping | No C binding action registered; scripts may provide an action. |
+| [bind_cpu_saver](../disambiguation/bind_cpu_saver.md) | Ask the client to save cpu by doing less housekeeping | No C binding action registered; scripts may provide an action. |
 | [bind_delete_character](../bind/delete_character.md) | Delete the character under the cursor | C binding action registered. |
 | [bind_delete_next_word](../bind/delete_next_word.md) | Delete from the cursor to the end of the next word | C binding action registered. |
 | [bind_delete_previous_word](../bind/delete_previous_word.md) | Delete from the cursor to the start of the previous word. | C binding action registered. |
@@ -149,7 +149,7 @@ The **Historical description / migration note** column preserves the original in
 | [bind_nothing](../bind/nothing.md) | Perform no action (unbinds a sequence) | Special unbind selector; not an action. |
 | [bind_parse_command](../bind/parse_command.md) | Execute a block of code (provided as argument) | C binding action registered. |
 | [bind_previous_window](../bind/previous_window.md) | Move up one visible ("split") window. | C binding action registered. |
-| [bind_quit_irc](../disambiguation/bind_quit_irc.txt) | Ask the user if they really want to [exit](../commands/exit.md). | No C binding action registered; scripts may provide an action. |
+| [bind_quit_irc](../disambiguation/bind_quit_irc.md) | Ask the user if they really want to [exit](../commands/exit.md). | No C binding action registered; scripts may provide an action. |
 | [bind_quote_character](../bind/quote_character.md) | Tell the client the next keypress should ignore its keybinding. | C binding action registered. |
 | [bind_refresh_inputline](../bind/refresh_inputline.md) | Tell the client to redraw the input line. | C binding action registered. |
 | [bind_refresh_screen](../bind/refresh_screen.md) | Tell the client to redraw the entire screen. | C binding action registered. |
@@ -162,7 +162,7 @@ The **Historical description / migration note** column preserves the original in
 | [bind_scroll_start](../bind/scroll_start.md) | Move to the start (oldest) of the scrollback buffer. | C binding action registered. |
 | [bind_self_insert](../bind/self_insert.md) | Insert the character itself into the input buffer. | C binding action registered. |
 | [bind_send_line](../bind/send_line.md) | Process the contents of the input buffer and reset the input buffer. | C binding action registered. |
-| [bind_stop_irc](../disambiguation/bind_stop_irc.txt) | Suspend the client with SIGTSTP, returning to your shell. | No C binding action registered; scripts may provide an action. |
+| [bind_stop_irc](../disambiguation/bind_stop_irc.md) | Suspend the client with SIGTSTP, returning to your shell. | No C binding action registered; scripts may provide an action. |
 | [bind_swap_last_window](../bind/swap_last_window.md) | Do a [window last](../window/last.md). | C binding action registered. |
 | [bind_swap_next_window](../bind/swap_next_window.md) | Do a [window next](../window/next.md). | C binding action registered. |
 | [bind_swap_previous_window](../bind/swap_previous_window.md) | Do a [window previous](../window/previous.md). | C binding action registered. |
@@ -212,7 +212,7 @@ The **Historical description / migration note** column preserves the original in
 | [on_dcc_activity](../disambiguation/on_dcc_activity.md) | Hooked when you send or receive a packet via dcc. | No C hook type registered; historical event. |
 | [on_dcc_chat](../disambiguation/on_dcc_chat.md) | Hooked when someone sends you a message over dcc chat. | No C hook type registered; historical event. |
 | [on_dcc_connect](../disambiguation/on_dcc_connect.md) | Hooked when a dcc connection starts. | No C hook type registered; historical event. |
-| [on_dcc_list](../disambiguation/on_dcc_list.md) | Hooked for each dcc connection when you do [dcc list](../disambiguation/ctcp_list.txt). | No C hook type registered; historical event. |
+| [on_dcc_list](../disambiguation/on_dcc_list.md) | Hooked for each dcc connection when you do [dcc list](../disambiguation/ctcp_list.md). | No C hook type registered; historical event. |
 | [on_dcc_lost](../disambiguation/on_dcc_lost.md) | Hooked when a dcc connection ends. | No C hook type registered; historical event. |
 | [on_dcc_offer](../disambiguation/on_dcc_offer.md) | Hooked when you offer someone a dcc connection. | No C hook type registered; historical event. |
 | [on_dcc_raw](../disambiguation/on_dcc_raw.md) | Hooked when you get data from a raw socket. | No C hook type registered; historical event. |
@@ -265,7 +265,7 @@ The **Historical description / migration note** column preserves the original in
 | [on_redirect](../disambiguation/on_redirect.md) | Hooked for each line of output being redirected back to irc. | No C hook type registered; historical event. |
 | [on_send_action](../on/send_action.md) | Hooked for every [me](../commands/me.md) or [describe](../commands/describe.md) you do. | C hook type registered. |
 | [on_send_ctcp](../on/send_ctcp.md) | Hooked for every [ctcp](../commands/ctcp.md) you send out. | C hook type registered. |
-| [on_send_dcc_chat](../disambiguation/on_send_dcc_chat.md) | Hooked for every [dcc chat](../disambiguation/ctcp_chat.txt) message you send out. | No C hook type registered; historical event. |
+| [on_send_dcc_chat](../disambiguation/on_send_dcc_chat.md) | Hooked for every [dcc chat](../disambiguation/ctcp_chat.md) message you send out. | No C hook type registered; historical event. |
 | [on_send_msg](../on/send_msg.md) | Hooked for every msg you send to someone else. | C hook type registered. |
 | [on_send_notice](../on/send_notice.md) | Hooked for every notice you send out. | C hook type registered. |
 | [on_send_public](../on/send_public.md) | Hooked for every msg you send to a channel. | C hook type registered. |
@@ -333,8 +333,8 @@ The **Historical description / migration note** column preserves the original in
 | [set_current_window_level](../set/current_window_level.md) | Assume the current window always owns these levels, overruling the window levels. | C setting registered. |
 | [set_dcc_auto_send_rejects](../disambiguation/set_dcc_auto_send_rejects.md) | Send a DCC REJECT to the other peer when you close a dcc. | No C setting registered; historical/unsupported built-in name. |
 | [set_dcc_dequote_filenames](../disambiguation/set_dcc_dequote_filenames.md) | De-urlifiy filenames offered; this permits filenames with spaces. | No C setting registered; historical/unsupported built-in name. |
-| [set_dcc_long_pathnames](../disambiguation/set_dcc_long_pathnames.md) | Show the full path, or just the filename, in [dcc list](../disambiguation/ctcp_list.txt). | No C setting registered; historical/unsupported built-in name. |
-| [set_dcc_sliding_window](../disambiguation/set_dcc_sliding_window.md) | Tweak speed of [dcc sends](../disambiguation/ctcp_send.txt). | No C setting registered; historical/unsupported built-in name. |
+| [set_dcc_long_pathnames](../disambiguation/set_dcc_long_pathnames.md) | Show the full path, or just the filename, in [dcc list](../disambiguation/ctcp_list.md). | No C setting registered; historical/unsupported built-in name. |
+| [set_dcc_sliding_window](../disambiguation/set_dcc_sliding_window.md) | Tweak speed of [dcc sends](../disambiguation/ctcp_send.md). | No C setting registered; historical/unsupported built-in name. |
 | [set_dcc_store_path](../disambiguation/set_dcc_store_path.md) | Where to save files others offer you. | No C setting registered; historical/unsupported built-in name. |
 | [set_dcc_use_gateway_addr](../disambiguation/set_dcc_use_gateway_addr.md) | Whether your client is in your router's DMZ. | No C setting registered; historical/unsupported built-in name. |
 | [set_debug](../set/debug.md) | Get help debugging your script. | C setting registered. |
@@ -376,7 +376,7 @@ The **Historical description / migration note** column preserves the original in
 | [set_mangle_logfiles](../set/mangle_logfiles.md) | How to mangle stuff we are writing to a logfile. | C setting registered. |
 | [set_mangle_outbound](../set/mangle_outbound.md) | How to mangle stuff we are sending to the server. | C setting registered. |
 | [set_metric_time](../set/metric_time.md) | Whether to use regular (minute) or metric (milliday) units for the clock. | C setting registered. |
-| [set_mirc_broken_dcc_resume](../disambiguation/set_mirc_broken_dcc_resume.md) | Whether to turn on [dcc resume](../disambiguation/ctcp_resume.txt). | No C setting registered; historical/unsupported built-in name. |
+| [set_mirc_broken_dcc_resume](../disambiguation/set_mirc_broken_dcc_resume.md) | Whether to turn on [dcc resume](../disambiguation/ctcp_resume.md). | No C setting registered; historical/unsupported built-in name. |
 | [set_mode_stripper](../set/mode_stripper.md) | Whether to turn on [on mode_stripped](../on/mode_stripped.md). | C setting registered. |
 | [set_new_server_lastlog_level](../set/new_server_lastlog_level.md) | What level to give a window when you do [window server](../window/server.md) to a new server. | C setting registered. |
 | [set_no_control_log](../set/no_control_log.md) | Whether control character should be stripped from stuff being written to logfiles. | C setting registered. |
@@ -599,7 +599,7 @@ The **Historical description / migration note** column preserves the original in
 | [close](../functions/close.md) | Close an [open](../functions/open.md) file. | C function registered; see linked reference for restrictions. |
 | [cofilter](../functions/cofilter.md) | Return words from 2nd variable, based on which words in 1st variable aren't matched by a pattern. | C function registered; see linked reference for restrictions. |
 | [common](../functions/common.md) | Return words common to two word lists. | C function registered; see linked reference for restrictions. |
-| [connect](../functions/connect.md) | Establish a [dcc raw](../disambiguation/ctcp_raw.txt) socket connection. | Registered stub; active implementation returns empty. |
+| [connect](../functions/connect.md) | Establish a [dcc raw](../disambiguation/ctcp_raw.md) socket connection. | Registered stub; active implementation returns empty. |
 | [convert](../functions/convert.md) | Convert a hostname to paddr, or paddr to hostname. | C function registered; see linked reference for restrictions. |
 | [copattern](../functions/copattern.md) | Return words from 2nd variable, based on which words in 1st variable are matched by a pattern. | C function registered; see linked reference for restrictions. |
 | [corfilter](../functions/corfilter.md) | Return words from 2nd variable, based on which patterns in 1st variable don't match a string. | C function registered; see linked reference for restrictions. |
@@ -870,7 +870,7 @@ The **Historical description / migration note** column preserves the original in
 | [activity](../scripts/activity.md) | An example of how to use generalized activity handling. | Script file retained; availability is not a compatibility guarantee. |
 | [addset](../scripts/addset.md) | Create and destroy your own [set](../commands/set.md)s. | Script file retained; availability is not a compatibility guarantee. |
 | [altchan](../scripts/altchan.md) | Implement <alt>-<number> window switching like bx. | Script file retained; availability is not a compatibility guarantee. |
-| [autoget](../disambiguation/scripts_autoget.txt) | Control what kinds of [dcc get](../disambiguation/ctcp_get.txt)s you want to auto-get. | Retained script; references removed DCC facilities. |
+| [autoget](../disambiguation/scripts_autoget.md) | Control what kinds of [dcc get](../disambiguation/ctcp_get.md)s you want to auto-get. | Retained script; references removed DCC facilities. |
 | [autojoin](../scripts/autojoin.md) | Automatically join channels when you (re-)connect to server. | Script file retained; availability is not a compatibility guarantee. |
 | [autoquery](../scripts/autoquery.md) | Automatically create a new querywin when someone msgs you. | Script file retained; availability is not a compatibility guarantee. |
 | [builtins](../scripts/builtins.md) | Top-level script for compatibility with EPIC4.  Must load! | Retained script; references removed DCC facilities. |
@@ -879,15 +879,15 @@ The **Historical description / migration note** column preserves the original in
 | [country](../scripts/country.md) | Convert between country codes and country names. | Script file retained; availability is not a compatibility guarantee. |
 | [data_array](../scripts/data_array.md) | This is a work in progress. | Script file retained; availability is not a compatibility guarantee. |
 | [data_struct](../scripts/data_struct.md) | This is a work in progress. | Script file retained; availability is not a compatibility guarantee. |
-| [dcc_ports](../disambiguation/scripts_dcc_ports.txt) | Specify a port range to be used automatically for [DCC](../disambiguation/dcc.md)s | Removed DCC interface; no current built-in command or transport. |
+| [dcc_ports](../disambiguation/scripts_dcc_ports.md) | Specify a port range to be used automatically for [DCC](../disambiguation/dcc.md)s | Removed DCC interface; no current built-in command or transport. |
 | [debug.irc](../scripts/debug.irc.md) | Aliases to help you debug/tune your script. | Script file retained; availability is not a compatibility guarantee. |
 | [dump](../scripts/dump.md) | Simulate the dump command from EPIC4. | Retained script; references removed DCC facilities. |
 | [edit_topic](../scripts/edit_topic.md) | Edit the topic of the current channel. | Script file retained; availability is not a compatibility guarantee. |
-| [epic-crypt-gpg](../disambiguation/scripts_epic-crypt-gpg.txt) | A shell script to use with [crypt](../disambiguation/crypt.md). | No bundled script file under this name; historical reference. |
-| [epic-crypt-gpg-aa](../disambiguation/scripts_epic-crypt-gpg-aa.txt) | A shell script to use with [crypt](../disambiguation/crypt.md). | No bundled script file under this name; historical reference. |
+| [epic-crypt-gpg](../disambiguation/scripts_epic-crypt-gpg.md) | A shell script to use with [crypt](../disambiguation/crypt.md). | No bundled script file under this name; historical reference. |
+| [epic-crypt-gpg-aa](../disambiguation/scripts_epic-crypt-gpg-aa.md) | A shell script to use with [crypt](../disambiguation/crypt.md). | No bundled script file under this name; historical reference. |
 | [files](../scripts/files.md) | Examples of what you can do with [open](../functions/open.md) files. | Script file retained; availability is not a compatibility guarantee. |
 | [floodprot](../scripts/floodprot.md) | Implement outbound flood protection. | Script file retained; availability is not a compatibility guarantee. |
-| [functions](../scripts/functions.txt) | Some utility commands and aliases. | Retained script; references removed DCC facilities. |
+| [functions](../scripts/functions.md) | Some utility commands and aliases. | Retained script; references removed DCC facilities. |
 | [global](../scripts/global.md) | The script you should load in your epicrc. | Script file retained; availability is not a compatibility guarantee. |
 | [grep](../scripts/grep.md) | An example of how to grep a file with [open](../functions/open.md). | Script file retained; availability is not a compatibility guarantee. |
 | [guh](../scripts/guh.md) | A few aliases for userhost, ison, and channels. | Script file retained; availability is not a compatibility guarantee. |
@@ -950,7 +950,7 @@ The **Historical description / migration note** column preserves the original in
 | [expando_substitution](expando_substitution.md) | How do $'s get expanded? | Documentation topic; not a command registration. |
 | [expandos](expandos.md) | Even more about how $'s get expanded. | Documentation topic; not a command registration. |
 | [expressions](expressions.md) | How math expressions work. | Documentation topic; not a command registration. |
-| [flood_control](../disambiguation/special_flood_control.txt) | How does flood control work? | Historical topic; corresponding built-in facility removed. |
+| [flood_control](../disambiguation/special_flood_control.md) | How does flood control work? | Historical topic; corresponding built-in facility removed. |
 | [functions_overview](functions_overview.md) | What are the built in functions? | Documentation topic; not a command registration. |
 | [glossary](glossary.md) | This is a work in progress. | Documentation topic; not a command registration. |
 | [graphics_chars](graphics_chars.md) | How to use alternate character set to echo box chars | Documentation topic; not a command registration. |
