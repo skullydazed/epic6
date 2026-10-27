@@ -1,0 +1,35 @@
+# CTCP ECHO
+
+## Synopsis
+
+```irc
+/ctcp <target> echo [<text>]
+```
+
+## Description
+
+Ask another client to return the supplied text in a CTCP reply. A supporting client can echo the text back, but support and automatic replies depend on that client's configuration. The original documentation noted that echo-style exchanges were historically used to measure round-trip times and that automatic replies could contribute to unwanted flooding. `ECHO` itself does not calculate elapsed time; the supplied [`ping`](ping.md) handler provides timestamp-based timing.
+
+EPIC6 supplies its `ECHO` responder in [script/ctcp](../../script/ctcp), loaded by [script/builtins](../../script/builtins). It replies to the sender with the same CTCP name and the received argument text. An empty request produces a reply without argument text. See [`ctcp`](../commands/ctcp.md) for sending syntax.
+
+The normal request travels in an IRC `PRIVMSG`, and the response travels in a `NOTICE`. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP ECHO reply from sender: text`. Request hooks, inactive CTCP registration, or reply throttling can prevent an automatic response.
+
+EPIC applies text encoding conversion and message-length limits, so an echo is not a promise of identical raw bytes or unlimited payload size. The [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) setting controls the outgoing CTCP reply throttle; it does not throttle outgoing requests.
+
+## Example
+
+```irc
+/ctcp john echo hello there
+```
+
+A supporting client that permits the request replies with `hello there`.
+
+## History
+
+The original DokuWiki revision identifier was `ctcp_echo.txt,v 1.3 2006/07/24 19:50:14 sthalik Exp`.
+
+## Source references
+
+- [script/ctcp](../../script/ctcp): `ECHO` request handler and description.
+- [source/commands.c](../../source/commands.c): `ctcpcmd()` selects request or reply framing.
+- [source/ctcp.c](../../source/ctcp.c): CTCP dispatch, reply hooks and display, encoding, size limits, and reply throttling.
