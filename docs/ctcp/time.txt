@@ -12,7 +12,7 @@ Ask another IRC client for its local date and time. This differs from the [`time
 
 EPIC6's responder is supplied by [script/ctcp](../../script/ctcp), loaded by [script/builtins](../../script/builtins). It ignores additional request arguments and replies with `$stime($time())`: the current client-host clock formatted in its local timezone and locale. The answer reflects the remote host's configuration and clock accuracy.
 
-Replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP TIME reply from sender: date-and-time`. Request hooks, inactive CTCP registration, or outgoing reply throttling can prevent a response.
+Replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP TIME reply from sender: date-and-time`. Request hooks or inactive CTCP registration can prevent a response. The C sender retains a reply-throttling branch, but [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) is not a registered setting. The branch updates its timestamp only when dropping replies; it does not establish a supported or reliable reply-rate limit.
 
 ## Example
 
@@ -29,4 +29,6 @@ The original DokuWiki revision identifier was `ctcp_time.txt,v 1.5 2006/08/29 18
 - [script/ctcp](../../script/ctcp): `TIME` responder and description.
 - [source/functions.c](../../source/functions.c) and [source/ircaux.c](../../source/ircaux.c): `function_time()`, `function_stime()`, and `my_ctime()` obtain and format local time.
 - [source/commands.c](../../source/commands.c): server `TIME` command registration and generic CTCP command handling.
-- [source/ctcp.c](../../source/ctcp.c): reply hooks, display, and throttling.
+- [source/ctcp.c](../../source/ctcp.c): reply hooks, display, and the retained incomplete reply-throttling branch.
+
+- [source/vars.c](../../source/vars.c) and [include/vars.h](../../include/vars.h): current registration omits the legacy setting identifier; `get_int_var()` directly reads its supplied index.
