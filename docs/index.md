@@ -14,13 +14,13 @@ make install
 
 Configuration checks the local compiler and libraries. The intended environment is a modern POSIX system with a C99-or-newer compiler and terminfo support, plus the required libraries identified by configuration. Installation writes to the configured prefix; choose one appropriate for your system. See [compile options](compile_opts.md) and the repository's `configure.ac` for build requirements and options. Optional integrations depend on how the client was built.
 
-EPIC6 is an evolving development line. Features, defaults, and script interfaces can differ from EPIC4 or EPIC5; an older package or script pack is not automatically an EPIC6-compatible installation. The repository's [UPDATES](../../UPDATES) and [KNOWNBUGS](../../KNOWNBUGS) describe changes and ongoing work. Distribution package names and availability depend on the operating system and its maintainers.
+EPIC6 is an evolving development line. Features, defaults, and script interfaces can differ from EPIC4 or EPIC5; an older package or script pack is not automatically an EPIC6-compatible installation. The repository's [UPDATES](UPDATES) and [KNOWNBUGS](KNOWNBUGS) describe changes and ongoing work. Distribution package names and availability depend on the operating system and its maintainers.
 
 ## Script packs and configuration
 
 The initial interface is intentionally small. Supplied scripts and personal configuration can add completion, history, automatic reconnection, and other behavior. A script pack may provide a substantially different interface, so check its supported client version and dependencies. The presence of an old script in the source tree does not guarantee all its original dependencies remain available.
 
-Read [global startup](../scripts/global.md), [loading scripts](../commands/load.md), and the documentation for the scripts you use. For script-specific behavior, consult that script's author or documentation.
+Read [global startup](scripts/global.md), [loading scripts](commands/load.md), and the documentation for the scripts you use. For script-specific behavior, consult that script's author or documentation.
 
 ## Using EPIC
 
