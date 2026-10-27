@@ -1,0 +1,26 @@
+# cpu_saver binding (removed)
+
+## Former synopsis
+
+```irc
+/bind <key> cpu_saver
+```
+
+## Description
+
+In earlier EPIC versions, this keybinding immediately switched the client to CPU saver mode. Ordinarily, the clock, notify system, and mail checks ran at intervals controlled by `CLOCK_INTERVAL`, `NOTIFY_INTERVAL`, and `MAIL_INTERVAL`. CPU saver mode used `CPU_SAVER_EVERY` instead, reducing the frequency of these checks while the user was away and immediate updates were less useful.
+
+EPIC6 has removed CPU saver mode, its built-in binding action, and the `CPU_SAVER_AFTER` and `CPU_SAVER_EVERY` settings. The historical syntax above does not install a supported built-in binding. With a valid key sequence in an unmodified session, it reports `No such function cpu_saver` and leaves the binding unchanged.
+
+The remaining built-in clock timer uses [`clock_interval`](../set/clock_interval.md) directly. Mail checking and notify functionality were moved to scripts; the former CPU saver behavior does not control them. Remove obsolete CPU saver bindings from startup scripts. See [`bind`](../commands/bind.md) for current binding operations.
+
+## History
+
+The original documentation records that this keybinding first appeared in EPIC4pre0.041. Its DokuWiki revision identifier was `bind_cpu_saver.txt,v 1.1.1.1 2006/07/11 04:57:43 jnelson Exp`.
+
+## Source references
+
+- [source/keys.c](../../source/keys.c): `init_binds()` omits `CPU_SAVER`; `bind_compressed_string()` rejects an unknown action before updating the binding.
+- [source/vars.c](../../source/vars.c): current setting registration includes `CLOCK_INTERVAL` and omits the former CPU saver settings.
+- [source/clock.c](../../source/clock.c): the current system timer table uses the clock's own interval setting.
+- [UPDATES](../../UPDATES): the EPIC6 feature retirement list records CPU saver's removal and the move of mail checking and notify to scripts.
