@@ -12,9 +12,9 @@ Ask another client to return the supplied text in a CTCP reply. A supporting cli
 
 EPIC6 supplies its `ECHO` responder in [script/ctcp](../../script/ctcp), loaded by [script/builtins](../../script/builtins). It replies to the sender with the same CTCP name and the received argument text. An empty request produces a reply without argument text. See [`ctcp`](../commands/ctcp.md) for sending syntax.
 
-The normal request travels in an IRC `PRIVMSG`, and the response travels in a `NOTICE`. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP ECHO reply from sender: text`. Request hooks, inactive CTCP registration, or reply throttling can prevent an automatic response.
+The normal request travels in an IRC `PRIVMSG`, and the response travels in a `NOTICE`. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md) and display as `CTCP ECHO reply from sender: text`. Request hooks or inactive CTCP registration can prevent an automatic response.
 
-EPIC applies text encoding conversion and message-length limits, so an echo is not a promise of identical raw bytes or unlimited payload size. The [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) setting controls the outgoing CTCP reply throttle; it does not throttle outgoing requests.
+EPIC applies text encoding conversion and message-length limits, so an echo is not a promise of identical raw bytes or unlimited payload size. The C sender retains an outgoing reply-throttling branch, but [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) is not a registered setting. That branch updates its timestamp only when dropping a reply, not after successful replies; it does not establish a supported or reliable reply-rate limit.
 
 ## Example
 
@@ -32,4 +32,6 @@ The original DokuWiki revision identifier was `ctcp_echo.txt,v 1.3 2006/07/24 19
 
 - [script/ctcp](../../script/ctcp): `ECHO` request handler and description.
 - [source/commands.c](../../source/commands.c): `ctcpcmd()` selects request or reply framing.
-- [source/ctcp.c](../../source/ctcp.c): CTCP dispatch, reply hooks and display, encoding, size limits, and reply throttling.
+- [source/ctcp.c](../../source/ctcp.c): CTCP dispatch, reply hooks and display, encoding, size limits, and the retained incomplete reply-throttling branch.
+
+- [source/vars.c](../../source/vars.c) and [include/vars.h](../../include/vars.h): the legacy variable identifier remains declared, but setting registration omits it; `get_int_var()` directly reads the supplied index.
