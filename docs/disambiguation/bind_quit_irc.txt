@@ -1,0 +1,21 @@
+# quit_irc binding (removed)
+
+## Former synopsis
+
+```irc
+/bind <key> quit_irc
+```
+
+## Description
+
+In older EPIC versions, this binding asked whether you wanted to quit the client and exited after an affirmative answer. EPIC6 no longer implements or registers the built-in `quit_irc` action.
+
+Binding a valid key sequence to `quit_irc` in an unmodified EPIC6 session reports `No such function quit_irc` and leaves the binding unchanged. Use [`quit`](../commands/quit.md) or `/exit` to leave the current client; those commands do not provide this former confirmation prompt.
+
+For a script-defined key workflow, the [`parse_command`](../bind/parse_command.md) action can invoke commands. A confirmation interaction must be implemented explicitly by that script. See [`bind`](../commands/bind.md) for supported binding operations.
+
+## Source references
+
+- [source/keys.c](../../source/keys.c): `init_binds()` omits `QUIT_IRC`; `bind_compressed_string()` rejects an unknown action before updating the binding.
+- [source/commands.c](../../source/commands.c): `QUIT` and `EXIT` call `e_quit()`, which invokes `irc_exit()` directly.
+- [source/input.c](../../source/input.c): `parse_text()` implements the `PARSE_COMMAND` binding.
