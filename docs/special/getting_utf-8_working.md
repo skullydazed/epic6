@@ -65,7 +65,7 @@ This changes EPIC's conversion rule; it does not change the terminal or Screen m
 
 The UTF-8 warning in the input code is a heuristic, not definitive encoding detection. The “which is wrong” diagnostic follows an iconv invalid-sequence error. Fix the mismatch rather than assuming either warning proves which external layer is misconfigured.
 
-See [encodings and locales](encodings_and_locales.txt) for more background, including the distinct rules for peer messages and script files.
+See [encodings and locales](encodings_and_locales.md) for more background, including the distinct rules for peer messages and script files.
 
 ## Source references
 

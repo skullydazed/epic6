@@ -13,7 +13,7 @@ git clone https://git.epicsol.org/epic6.git
 cd epic6
 ```
 
-This creates a source checkout, not an installed executable. See [basic Git for CVS users](basic_git_for_cvs_users.txt) for updating a checkout and producing patches.
+This creates a source checkout, not an installed executable. See [basic Git for CVS users](basic_git_for_cvs_users.md) for updating a checkout and producing patches.
 
 ## Older source locations
 

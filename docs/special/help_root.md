@@ -1,6 +1,6 @@
 # EPIC help collection: comprehensive historical index
 
-[Welcome](welcome.md) to the help collection. For a short current introduction, start with [getting started](getting_started.txt), [commands](commands_overview.md), [functions](functions_overview.md), and [scripting](epic_scripting.txt).
+[Welcome](welcome.md) to the help collection. For a short current introduction, start with [getting started](getting_started.md), [commands](commands_overview.md), [functions](functions_overview.md), and [scripting](epic_scripting.md).
 
 This page migrates the original master index in full. Its breadth includes older EPIC4/EPIC5 names and removed features. The **Current source status** column was checked against this EPIC6 checkout's registration tables and retained script files. A registration establishes that a name exists, not that every old behavior or optional integration works. Linked references explain current arguments, limits, and build requirements.
 
@@ -181,7 +181,7 @@ The **Historical description / migration note** column preserves the original in
 | [break](../commands/break.md) | Early termination of the loop; advance to the next command in the block. | C command registered; see linked reference for behavior. |
 | [call](../commands/call.md) | Dump the current script call stack to the window. | C command registered; see linked reference for behavior. |
 | [cd](../commands/cd.md) | Change the client's current working directory | C command registered; see linked reference for behavior. |
-| [comment](../commands/comment.txt) | The no-op command. | C command registered; see linked reference for behavior. |
+| [comment](../commands/comment.md) | The no-op command. | C command registered; see linked reference for behavior. |
 | [continue](../commands/continue.md) | Early termination of the current iteration of a loop; go back to the top and start the next iteration. | C command registered; see linked reference for behavior. |
 | [defer](../commands/defer.md) | Run a command only when the client is not doing something. | C command registered; see linked reference for behavior. |
 | [do](../commands/do.md) | Post-test looping command | C command registered; see linked reference for behavior. |
@@ -877,8 +877,8 @@ The **Historical description / migration note** column preserves the original in
 | [chanmonitor](../scripts/chanmonitor.md) | Displays output of non-current channels in hidden windows to a special visible window. | Script file retained; availability is not a compatibility guarantee. |
 | [commandqueues](../scripts/commandqueues.md) | Time-delay processing queues. | Script file retained; availability is not a compatibility guarantee. |
 | [country](../scripts/country.md) | Convert between country codes and country names. | Script file retained; availability is not a compatibility guarantee. |
-| [data_array](../scripts/data_array.txt) | This is a work in progress. | Script file retained; availability is not a compatibility guarantee. |
-| [data_struct](../scripts/data_struct.txt) | This is a work in progress. | Script file retained; availability is not a compatibility guarantee. |
+| [data_array](../scripts/data_array.md) | This is a work in progress. | Script file retained; availability is not a compatibility guarantee. |
+| [data_struct](../scripts/data_struct.md) | This is a work in progress. | Script file retained; availability is not a compatibility guarantee. |
 | [dcc_ports](../disambiguation/scripts_dcc_ports.txt) | Specify a port range to be used automatically for [DCC](../disambiguation/dcc.md)s | Removed DCC interface; no current built-in command or transport. |
 | [debug.irc](../scripts/debug.irc.md) | Aliases to help you debug/tune your script. | Script file retained; availability is not a compatibility guarantee. |
 | [dump](../scripts/dump.md) | Simulate the dump command from EPIC4. | Retained script; references removed DCC facilities. |
@@ -987,7 +987,7 @@ The **Historical description / migration note** column preserves the original in
 | [space_character](space_character.md) | What constitutes a space character? | Documentation topic; not a command registration. |
 | [special_vars](special_vars.md) | Info about $ expandos, and a list of the inline expandos. | Documentation topic; not a command registration. |
 | [standard_loader](standard_loader.md) | All about using the std (standard) loader. | Documentation topic; not a command registration. |
-| [start](help_root.txt) | This comprehensive index. | Documentation topic; not a command registration. |
+| [start](help_root.md) | This comprehensive index. | Documentation topic; not a command registration. |
 | [status_line](status_line.md) | All you need to know about the status bar. | Documentation topic; not a command registration. |
 | [text_hilight](text_hilight.md) | Bold, and Underline, and Color, and Reverse, oh my! | Documentation topic; not a command registration. |
 | [using_perl](../disambiguation/special_using_perl.md) | What you need to know to use perl. | Historical topic; corresponding built-in facility removed. |

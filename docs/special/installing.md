@@ -2,7 +2,7 @@
 
 ## Configure
 
-Unpack a source archive or obtain a [source checkout](getting_epic.txt), then change into its top-level directory. EPIC6 targets modern POSIX systems and requires a suitable C compiler and libraries; the original claim that it should build on almost any Unix was broader than the current configuration requirements. See [compile options](compile_opts.md) and the checks in `configure.ac`.
+Unpack a source archive or obtain a [source checkout](getting_epic.md), then change into its top-level directory. EPIC6 targets modern POSIX systems and requires a suitable C compiler and libraries; the original claim that it should build on almost any Unix was broader than the current configuration requirements. See [compile options](compile_opts.md) and the checks in `configure.ac`.
 
 Run the supplied configuration script:
 
@@ -47,7 +47,7 @@ Program-name transformation and directory options can change those names and loc
 
 ## Scripts and customization
 
-A script pack is optional. EPIC's own scripting language and supplied scripts can customize display, input, and automation, and different packs offer different workflows. Choose scripts that support your EPIC6 version and check their dependencies; an older pack may call removed interfaces. Start with [the supplied startup scripts](../scripts/global.md) or [the scripting introduction](epic_scripting.txt), and customize according to your needs rather than treating a script pack as an installation requirement.
+A script pack is optional. EPIC's own scripting language and supplied scripts can customize display, input, and automation, and different packs offer different workflows. Choose scripts that support your EPIC6 version and check their dependencies; an older pack may call removed interfaces. Start with [the supplied startup scripts](../scripts/global.md) or [the scripting introduction](epic_scripting.md), and customize according to your needs rather than treating a script pack as an installation requirement.
 
 ## Source references
 
