@@ -16,7 +16,7 @@ The active list describes local registration state, not a promise that every nam
 
 **Current implementation limitation:** the responder passes the requested name to `ctcpctl(GET ... ACTIVE)` without checking registration first. The C getter accesses the lookup result without guarding an unknown name, which can crash the responding EPIC6 client. Request descriptions only for names the responder has advertised.
 
-Request hooks, inactive CTCP settings, or outgoing reply throttling can prevent a reply. Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md), allowing scripts to customize or suppress their display.
+Request hooks or inactive CTCP registration can prevent a reply. The C sender retains a reply-throttling branch, but `NO_CTCP_FLOOD` is not registered as a setting, and the branch updates its timestamp only when dropping replies. It does not establish a supported or reliable reply-rate limit; see [no_ctcp_flood](../disambiguation/set_no_ctcp_flood.md). Received replies normally pass through [`on ctcp_reply`](../on/ctcp_reply.md), allowing scripts to customize or suppress their display.
 
 ## Examples
 
@@ -39,5 +39,7 @@ The original DokuWiki revision identifier was `ctcp_clientinfo.txt,v 1.3 2006/07
 ## Source references
 
 - [script/ctcp](../../script/ctcp): `do_clientinfo_request()` and `CLIENTINFO`/`ERRMSG` registrations.
-- [source/ctcp.c](../../source/ctcp.c): `function_ctcpctl()`, `lookup_ctcp()`, CTCP hooks, reply display, and reply throttling.
+- [source/ctcp.c](../../source/ctcp.c): `function_ctcpctl()`, `lookup_ctcp()`, CTCP hooks, reply display, and the retained incomplete reply-throttling branch.
 - [KNOWNBUGS](../../KNOWNBUGS) and [UPDATES](../../UPDATES): retirement of DCC and legacy encryption facilities.
+
+- [source/vars.c](../../source/vars.c) and [include/vars.h](../../include/vars.h): current setting registration omits `NO_CTCP_FLOOD`; the legacy identifier remains, and `get_int_var()` reads an index rather than resolving a setting name.
