@@ -1,0 +1,27 @@
+# man script (obsolete help interface)
+
+## Synopsis
+
+```irc
+/load man
+/man <topic>
+```
+
+## Description
+
+The retained script defines a man-like lookup for the former sectioned EPIC help files. It is not a wrapper around the operating system's `man` program.
+
+For the first topic word, the alias tests `<help_path>/<section>*/<topic>` with sections `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, and `n`, in that order. It stops at the first match. Contrary to the original description, this is a fixed sequence of filename patterns rather than a recursive search of all subdirectories. On a match it calls `help <section> <original arguments>`, then `help -wait`; with no arguments or no match, it is silent.
+
+EPIC6 has retired the built-in help browser and `HELP_PATH` setting. Loading `man` does not restore them or turn this alias into a browser for the Markdown documentation. The retained [help script](scripts_help.md) uses a different interface and depends on the disabled `connect()` function, so it does not supply the former section/wait behavior either. A separately supplied `help` alias would define its own behavior.
+
+## History
+
+Written by Dawid Kuroczko; the script is marked 1997. The original DokuWiki revision identifier was `man.txt,v 1.2 2006/08/01 05:15:58 sthalik Exp`.
+
+## Source references
+
+- [script/man](../../script/man): section sequence, glob patterns, and help calls.
+- [source/commands.c](../../source/commands.c) and [source/vars.c](../../source/vars.c): current registrations omit the former help command and path setting.
+- [script/help.irc](../../script/help.irc) and [source/functions.c](../../source/functions.c): later help interface and disabled raw-connection dependency.
+- [KNOWNBUGS](../../KNOWNBUGS): old help-file support retirement.
