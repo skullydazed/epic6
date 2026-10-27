@@ -1,0 +1,44 @@
+# DCC CHAT (removed)
+
+## Former synopsis
+
+```irc
+/dcc chat <nick> [-p <port>]
+```
+
+## Current status
+
+EPIC6 has removed the built-in `/dcc` command and DCC implementation. It cannot offer, accept, or maintain a DCC Chat session through this former interface. The historical `/msg =nick` and CTCP-over-DCC forms do not select a built-in DCC transport in EPIC6. Retained scripts that call removed DCC primitives do not restore them.
+
+Use [`msg`](../commands/msg.md) or [`query`](../commands/query.md) for an ordinary IRC conversation. Those messages travel through the IRC network rather than creating a direct client connection.
+
+## Historical behavior
+
+DCC Chat offered a direct connection to another client or accepted an existing offer. Once connected, conversation bypassed IRC servers. This avoided dependence on IRC network routing, but the original document's guarantees of faster or guaranteed delivery were too broad: a direct connection could still fail, and bypassing IRC did not itself provide encryption.
+
+Connecting directly exposed endpoint IP information to the peer, including addresses hidden by an IRC hostname cloak. NAT and firewall restrictions could prevent a peer from reaching the offered endpoint. The optional `-p <port>` selected the port to use.
+
+Messages were addressed with `/msg =<nick> <text>`. The local DCC name was the nickname used for the original DCC Chat command, even if that user later changed their IRC nickname. The former DCC Rename operation could change the local DCC name.
+
+Clients supporting CTCP over DCC Chat could also exchange CTCP messages on the direct connection, including negotiations for file transfers. Support depended on both clients. A session normally remained open until one side closed it or exited, though network failures could also terminate it. Repeating `/dcc chat <nick>` for a pending offer sent the offer again.
+
+## Historical examples
+
+These commands illustrate the removed interface and are not supported EPIC6 operations:
+
+```irc
+/dcc chat bob
+/msg =bob Hi there bob!
+```
+
+After Bob accepted the offer, the second command addressed the direct connection, retaining `=bob` even after an IRC nickname change.
+
+## History
+
+The original DokuWiki revision identifier was `dcc_chat.txt,v 1.3 2007/02/02 23:28:03 jnelson Exp`.
+
+## Source references
+
+- [KNOWNBUGS](../../KNOWNBUGS): retirement of `/dcc`, `$dccctl()`, and related facilities.
+- [source/commands.c](../../source/commands.c): current command registration and message sending omit the DCC command and transport.
+- [source/ctcp.c](../../source/ctcp.c): current CTCP initialization has no built-in DCC negotiation handler.
