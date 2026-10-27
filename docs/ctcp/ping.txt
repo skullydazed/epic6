@@ -14,7 +14,7 @@ A supporting recipient echoes the argument text. The supplied EPIC6 [CTCP script
 
 The result estimates round-trip delay through the IRC network and remote client, including any processing or throttling delays. It is separate from IRC server `PING`/`PONG` messages. A reply is not guaranteed, and the script does not check returned timestamps against a saved outstanding request.
 
-The current reply script leaves the original arguments unchanged when either timestamp field evaluates as false or the calculated delay is negative. Thus a zero microsecond field does not receive the normal elapsed-time replacement. Its calculation uses wall-clock time, so clock adjustments can affect the result. Automatic replies are subject to the normal CTCP reply throttle.
+The current reply script leaves the original arguments unchanged when either timestamp field evaluates as false or the calculated delay is negative. Thus a zero microsecond field does not receive the normal elapsed-time replacement. Its calculation uses wall-clock time, so clock adjustments can affect the result. The C sender retains a reply-throttling branch, but [`no_ctcp_flood`](../disambiguation/set_no_ctcp_flood.md) is not registered as a setting. The branch updates its timestamp only when dropping replies, so it does not establish a supported or reliable reply-rate limit.
 
 ## Example
 
@@ -33,4 +33,6 @@ The original DokuWiki revision identifier was `ctcp_ping.txt,v 1.3 2006/07/24 19
 - [source/commands.c](../../source/commands.c): `pingcmd()` supplies the timestamp and calls `ctcpcmd()`.
 - [script/ctcp](../../script/ctcp): `PING` request/response registrations and `do_ping_reply()`.
 - [source/functions.c](../../source/functions.c): `function_utime()` returns the two timestamp fields.
-- [source/ctcp.c](../../source/ctcp.c): argument replacement, reply display/hooks, and throttling.
+- [source/ctcp.c](../../source/ctcp.c): argument replacement, reply display/hooks, and the retained incomplete reply-throttling branch.
+
+- [source/vars.c](../../source/vars.c) and [include/vars.h](../../include/vars.h): current setting registration omits the legacy identifier; `get_int_var()` directly reads a supplied index.
